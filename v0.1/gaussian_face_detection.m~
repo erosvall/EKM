@@ -1,1 +1,25 @@
-addpath('/Users/erikrosvall/Dropbox/Kex/yalefaces','-frozen');
+%% Add Images to working directory
+% Make sure path is correct for your computer. But not you Viktor
+path = '/Users/erikrosvall/Dropbox/Kex/yalefaces/mattraining/';
+addpath(genpath(path));
+
+
+%% Generate training system
+%mshow('s1p1.gif');
+IV = []; 
+for i = 1:1
+    for k = 1:10
+        imgFileName = strcat('s',num2str(i),'p',num2str(k),'.gif');
+        img = imread(imgFileName);
+        IV = [IV img(:)];
+        options = statset('Display','final');
+        obj = gmdistribution.fit(IV,500,'Options',options);
+    end
+    try
+        GMM = gmdistribution.fit(IV,500,'Options',options);
+    catch exception
+        disp('Something went wrong trying to do a Gaussian mixture model fit');
+    end
+end
+
+%% Generate test system
