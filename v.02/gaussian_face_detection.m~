@@ -5,22 +5,34 @@ path = '/Users/Viktor/Dropbox/KTH/År 3/Period 3/Kex/yalefaces/training/';
 addpath(genpath(path));
 
 
-%% Matlab saker att 
+
 
 %% Generate training system
 clc
 %mshow('s1p1.gif');
-IV = []; 
-A = rand(8,77760);
+imageVector = []; 
+MU = [];
+SIGMA = [];
+
+A = rand(1000,77760);
 fileEnding = {'centerlight','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy'};
-for i = 1:1
+for i = 1:4
+    mu = [];
     for k = 1:9
         imgFileName = strcat('subject0',num2str(i),'.',fileEnding{1,k}); 
         img = imread(imgFileName);
         j = im2double(img);
-        IV = [IV A*j(:)];
+        imageVector = [imageVector A*j(:)];
     end
-    GMM = fitgmdist(IV',1,'Regularize',0.00001);
+    
+    for l = 1:length(imageVector(:,1))
+         mu = [mu ; mean(imageVector(l,:))];
+    end
+    
+    SIGMA(:,:,i) = cov(imageVector');
+    
+    MU = [MU mu];
+    
 
 end
 
@@ -35,8 +47,24 @@ fileDataTest = string(fileEndingTest);
 
 imgFileName = strcat('subject01.wink');
 img = imread(imgFileName);
-j = im2double(img);
-X = A*j(:);
 
-y = mvnpdf(X,GMM.mu, GMM.Sigma);
-posterior(GMM,X')
+testImage = im2double(img);
+testVector = A*j(:);
+prob = 0;
+for i = 1:4
+    y = mvnpdf(testVector, MU(:,i), SIGMA(:,:,i);
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+

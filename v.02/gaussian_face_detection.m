@@ -5,25 +5,42 @@ path = '/Users/Viktor/Dropbox/KTH/År 3/Period 3/Kex/yalefaces/training/';
 addpath(genpath(path));
 
 
-%% Matlab saker att 
+
 
 %% Generate training system
 clc
+
 %mshow('s1p1.gif');
-IV = []; 
-A = rand(8,77760);
+imageVector = []; 
+MU = [];
+SIGMA = [];
+numbOfClasses = 1;
+
+A = rand(512,77760);
 fileEnding = {'centerlight','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy'};
-for i = 1:1
+for i = 1:numbOfClasses
+    mu = [];
     for k = 1:9
         imgFileName = strcat('subject0',num2str(i),'.',fileEnding{1,k}); 
         img = imread(imgFileName);
         j = im2double(img);
-        IV = [IV A*j(:)];
+        imageVector = [imageVector A*j(:)];
     end
-    GMM = fitgmdist(IV',1,'Regularize',0.00001);
-
+    
+    for l = 1:length(imageVector(:,1))
+         mu = [mu ; mean(imageVector(l,:))];
+    end
+    
+    SIGMA(:,:,i) = cov(imageVector'); %IV primmas för att:
+    %For matrices, where each row is an observation, 
+    %and each column a variable, cov(X) is the 
+    %covariance matrix
+    
+    MU = [MU mu];
+    
+    disp('Done with class')
 end
-
+disp('Done with modelling')
 %% Generate test system
 %path = '/Users/erikrosvall/Dropbox/Kex/yalefaces/test/';
 path = '/Users/Viktor/Dropbox/KTH/År 3/Period 3/Kex/yalefaces/test/';
@@ -35,8 +52,26 @@ fileDataTest = string(fileEndingTest);
 
 imgFileName = strcat('subject01.wink');
 img = imread(imgFileName);
-j = im2double(img);
-X = A*j(:);
 
-y = mvnpdf(X,GMM.mu, GMM.Sigma);
-posterior(GMM,X')
+testImage = im2double(img);
+testVector = A*j(:);
+
+prob = [];
+
+for i = 1:numbOfClasses
+    prob = mvnpdf(testVector, MU(:,i), SIGMA(:,:,i));
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
