@@ -18,7 +18,7 @@ SizeOfVector = 500; % to high dimension leads to ill-contitiond sigma
 
 c = 10e-3; %solving ill-condition of SIGMA
 
-A = rand(512,77760);
+
 fileEnding = {'centerlight','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy'};
 for i = 1:numbOfClasses
     mu = [];
@@ -30,7 +30,7 @@ for i = 1:numbOfClasses
         end
         img = imread(imgFileName);
         j = im2double(img);
-        imageVector = [imageVector resample(j(:),SizeOfVector,77760)];
+        imageVector = [imageVector resample(j(:),SizeOfVector,max(size(j(:))))];
     end
     
     for l = 1:length(imageVector(:,1))
@@ -95,7 +95,7 @@ for i = 1:2 %looping over fileEndings
         end
     end
     disp(' ' )
-    disp(strcat('Accuracy of prediction:', num2str(100*correctCounter/numbOfClasses),'%'))
+    disp(strcat('Accuracy of classification:', num2str(100*correctCounter/numbOfClasses),'%'))
     disp('------------')
 end
 disp('send nudes')
