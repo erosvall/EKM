@@ -27,6 +27,7 @@ for i = 1:L % för varje vektor i data-set
         r = X(:,i) - P;
         norm(r)
     end
+    
     A = [A a];
     I = [I; tempI']
     
