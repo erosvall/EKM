@@ -17,7 +17,7 @@ I = []; %Sparar utvalda index
 for i = 1:L % för varje vektor i data-set
     r = X(:,i); %residualen 
     D0 = []; %Utvalda atomer sparas för denna datavektor
-    tempI = []; %Utvalda atomers idex sparas för denna datavetktor
+    tempI = []; %Utvalda atomers index sparas för denna datavektor
     for j = 1:s %
         [maxval, maxarg] = max(abs(r'*D)); %hittar bästa projektionen
         tempI = [tempI maxarg]; %använda atomer från D
@@ -25,11 +25,11 @@ for i = 1:L % för varje vektor i data-set
         a = (D0'*D0)\(D0'*X(:,i)); %projicerar x på det som späns upp av alla hitils utvalda atomer 
         P = sum(D0*a,2);
         r = X(:,i) - P;
-        norm(r)
+        norm(r) % Vad gör denna? Sparar den r som normerad?
     end
     
-    A = [A a];
-    I = [I; tempI']
+    A = [A a]; % Koefficienterna 
+    I = [I; tempI]
     
 end
 

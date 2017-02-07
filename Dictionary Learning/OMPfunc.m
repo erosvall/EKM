@@ -6,18 +6,14 @@ function [ A ] = OMPfunc( signal, dictionary, sparcity )
 % dictionary needs to have normalizied columns 
 
 [n,L] = size(signal);
-[m,v] = size(dictionary);
-
-% n = 10; % dim på data
-% L = 2; % antal data
-% m = 20; % storlek på dictionary
+m = size(dictionary,1);
 s = sparcity; % sparcity
 
-X = signal; % rand(n,L); % data 
+X = signal; % data 
 D = dictionary; %normc(rand(n,m)); % dictionary med normerade atomer
 S = []; % sparce representation av vektor
 
-A = zeros(n,m);
+A = zeros(x);
 
 % Steg 1: Sparce coding genom OMP --------------------------
 

@@ -11,16 +11,14 @@ A = sparseRepresentation;
 
 for i = 1:size(D,2) 
     a = A(i,:);
-    d_i = D(:,i);
     omega = find(A(i,:));
     v = size(omega,2);
+    OMEGA = zeros(p,v);
     if v ~= 0
-        OMEGA = zeros(p,v);
         for j = 1:v
            OMEGA(omega(1,j),j) = 1;
         end
     end
-    a_red = a*OMEGA;
     I = zeros(n,p);
     for k = 1:size(D,2)
        if k ~= i
