@@ -19,17 +19,21 @@ for i = 1:size(D,2)
         end
     end
     I = zeros(n,p);
-    for k = 1:size(D,2)
-       if k ~= i
-           d_k = D(:,k);
-           a_k = A(k,:);
-           I = I + d_k * a_k;
-       end
-    end
+    
+    I = D*A - D(:,i)*A(i,:);
+    
+%     for k = 1:size(D,2)
+%        if k ~= i
+%            d_k = D(:,k);
+%            a_k = A(k,:);
+%            I = I + d_k * a_k;
+%        end
+%     end
     Ei = X - I;
     Er = Ei*OMEGA;
-    [U,S,V] = svd(Er);
-    D(:,i) = U(:,1);
+    [U,S,V] = svds(Er,1,'l');
+    %U
+    D(:,i) = U;
 
 end
 

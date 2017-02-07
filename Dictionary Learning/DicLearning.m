@@ -3,11 +3,11 @@
 clear all
 clc
 
-sparcity  = 4; % sparcit
+sparcity  = 10; % sparcit
 
-n = 40; % dimension av data
-p = 300; % antal data
-m = 100; % storlek av dictionary
+n = 100; % dimension av data
+p = 1000; % antal data
+m = 200; % storlek av dictionary
 
 D0 = normc(rand(n,m)); 
 D =  normc(rand(n,m));
@@ -23,14 +23,16 @@ X = D0*A0;
 %% D
 
 F = [];
-for i = 1:100
+for i = 1:15
     A = OMP(D,X,sparcity);
+    
     D = KSVD(D,X,A);
+
     F = [F; i norm(D-D0)];
 end
-G = D-D0;
-disp(strcat('Done! Result: ', num2str(norm(G))));
-plot(F(1,:),F(2,:))
+G = D0-D;
+disp(strcat('Done! Result: ',' ', num2str(norm(G))));
+plot(F(:,1),F(:,2))
 
 
 
