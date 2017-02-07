@@ -26,7 +26,7 @@ F = [];
 for i = 1:15
     A = OMP(D,X,sparcity);
     
-    D = KSVD(D,X,A);
+    D = KSVD2(D,X,A);
 
     F = [F; i norm(D-D0)];
 end

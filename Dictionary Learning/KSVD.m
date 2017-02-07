@@ -18,7 +18,7 @@ for i = 1:size(D,2)
            OMEGA(omega(1,j),j) = 1; % Matrisen som komprimerar A till enbart aktiva rader
         end
     end
-    I = zeros(n,p);
+    %I = zeros(n,p);
     
     I = D*A - D(:,i)*A(i,:);
     
@@ -29,9 +29,9 @@ for i = 1:size(D,2)
 %            I = I + d_k * a_k;
 %        end
 %     end
-    Ei = X - I;
+    Ei = X(:,omega) - D(:,i)*A(i,omega);
     Er = Ei*OMEGA;
-    [U,S,V] = svds(Er,1,'l');
+    [U,~,~] = svds(Er,1,'l');
     %U
     D(:,i) = U;
 
