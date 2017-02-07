@@ -6,8 +6,8 @@ clc
 
 sparcity  = 10; % sparcit
 
-n = 100; % dimension av data
-p = 1000; % antal data
+n = 200; % dimension av data
+p = 2000; % antal data
 m = 200; % storlek av dictionary
 
 D0 = normc(rand(n,m)); 
@@ -25,16 +25,17 @@ end
 X = D0*A0;
 %% D
 
-F = [];
-for i = 1:100
+F = zeros(100,2);
+for i = 1:15
     A = OMP(D,X,sparcity);
 
-    D = KSVD2(D,X,A);
+    %D = KSVD2(D,X,A);
+    D = MOD(X,A);
  
     F = [F; i norm(X-D*A)];
 end
 G = X-D*A;
-disp(strcat('Done! Result: norm(X-X_hat)  ',' ', num2str(norm(G))));
+disp(strcat('Done! Result: norm(X-X_hat)=', num2str(norm(G))));
 plot(F(:,1),F(:,2))
 
 
