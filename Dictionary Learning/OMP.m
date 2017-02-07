@@ -1,46 +1,31 @@
-function [x] = OMP (K,y,A)
+function [ A ] = OMP(  dictionary,signal, sparcity )
+%OMPfunc takes the signal to match against and a dictionary
+% and returns a sparse Matrix A with the best possible representation
+% of the signal. Sparcity gives us the number of atoms per signal in A
 
-Res = y.' ;
-[m,n] = size (A) ;
+% dictionary needs to have normalizied columns 
 
-Q = zeros (m,K) ;
-R = zeros (K,K) ;
-Rinv = zeros (K,K) ;
-w = zeros (m,K) ;
-x = zeros (1,n) ;
+p = size(signal,2);
+m = size(dictionary,2);
+s = sparcity; % sparcity
 
-for J = 1 : K
-    
-    %Index Search
-    [V ,kkk] = max(abs(A'*Res)) ;
-    kk (J) = kkk ;
-    
-    %Residual Update
-    w (:,J) = A (:,kk (J)) ;
-    for I = 1 : J-1
-        if (J-1 ~= 0)
-            R (I,J) = Q (:,I)' * w (:,J) ;
-            w (:,J) = w (:,J) - R (I,J) * Q (:,I) ;
-        end
-    end
-    R (J,J) = norm (w (:,J)) ;
-    Q (:,J) = w (:,J) / R (J,J) ;
-    Res = Res - (Q (:,J) * Q (:,J)' * Res) ;
-  
-end
+X = signal; % data 
+D = dictionary; %normc(rand(n,m)); % dictionary med normerade atomer
 
-%Least Squares
-for J = 1 : K
-    Rinv (J,J) = 1 / R (J,J) ;
-    if (J-1 ~= 0)
-        for I = 1 : J-1
-            Rinv (I,J) = -Rinv (J,J) * (Rinv (I,1:J-1) * R (1:J-1,J)) ;
-        end
+A = zeros(m,p);
+
+for i = 1:p % för varje vektor i data-set
+    r = X(:,i); %residualen 
+    D0 = []; %Utvalda atomer sparas för denna datavektor
+    for j = 1:s %
+        [maxval, maxarg] = max(abs(r'*D)); %hittar bästa projektionen
+        D0 = [D0 D(:,maxarg)]; %sparar den bästa atomen från denna iteration  
+        a = (D0'*D0)\(D0'*X(:,i)); %projicerar x på det som späns upp av alla hitils utvalda atomer 
+        P = sum(D0*a,2);
+        r = X(:,i) - P;
+        A(maxarg,i) = a(j,1);
     end
 end
 
-xx = Rinv * Q' * y.' ;
-
-for I = 1 : K
-    x (kk (I)) = xx (I) ;
 end
+
