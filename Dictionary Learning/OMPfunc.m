@@ -34,14 +34,13 @@ for i = 1:L % för varje vektor i data-set
         a = (D0'*D0)\(D0'*X(:,i)); %projicerar x på det som späns upp av alla hitils utvalda atomer 
         P = sum(D0*a,2);
         r = X(:,i) - P;
-        norm(r) % Vad gör denna? Sparar den r som normerad?
     end
 
-    S = [S a]; % Koefficienterna 
-    I = [I; tempI]
+    S = [S a]; % Temporär Koefficient vektor 
+    I = [I; tempI];
     
     for k = 1:s
-        A(I(i,k),i) =  S(i,k);
+        A(I(i,k),i) =  S(k,i);
     end
 
 end
