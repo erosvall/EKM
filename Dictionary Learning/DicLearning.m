@@ -6,14 +6,14 @@ clc
 
 sparcity  = 10; % sparcit
 
-n = 200; % dimension av data
-p = 2000; % antal data
+n = 100; % dimension av data
+p = 1000; % antal data
 m = 200; % storlek av dictionary
 
 D0 = normc(rand(n,m)); 
 D =  normc(rand(n,m));
 
-%disp(strcat('Initial difference ',num2str(norm(D0-D))))
+disp(strcat('Initial difference ',num2str(DictionaryComparison(D,D0))))
 
 A0 = zeros(m,p);
 for i = 1:size(A0,2)
@@ -24,31 +24,27 @@ end
 
 X = D0*A0;
 %% D
-
-F = zeros(100,2);
-for i = 1:15
+w = warning('off','all');
+P1 = [];
+P2 = [];
+for i = 1:30
     A = OMP(D,X,sparcity);
-
-    %D = KSVD2(D,X,A);
     D = MOD(X,A);
- 
-    F = [F; i norm(X-D*A)];
-end
-G = X-D*A;
-disp(strcat('Done! Result: norm(X-X_hat)=', num2str(norm(G))));
-plot(F(:,1),F(:,2))
-
-% Dictionary comparison
-Dcopy = D0;
-totalDiff = 0;
-
-for i = 1:size(D:2)
-    temp = D(:,i) - Dcopy;
-    [minval, minarg] = min(sqrt(sum(temp.^2)));
-    Dcopy(:,minarg) = [];
-    totalDiff = totalDiff + minval;
+    %D = KSVD2(D,X,A);
+    [totalDiff, diffPerCol] = DictionaryComparison(D,D0);
+    
+    P1 = [P1; i totalDiff];
+    
+    
+    
 end
 
+disp(strcat('Done! Result: norm(D-D0)=', num2str(norm(D-D0))));
+figure(1)
+plot(P1(:,1),P1(:,2))
+
+
+disp(strcat('Done! Result: DicComp(D-D0)=', num2str(DictionaryComparison(D,D0))));
 
 
 
