@@ -1,4 +1,4 @@
-function [ totalDiff, diffPerElement ] = DictionaryComparison( D, D0 )
+function [ totalDiff, diffPerCol ] = DictionaryComparison( D, D0 )
 % Comparing similary between original dicionary D0 and generated dictionary
 % D. Works only when D and D0 have normalized columns
 % 
@@ -10,6 +10,6 @@ for i = 1:size(D,2)
     totalDiff = totalDiff + (1-maxval);
 end
 
-diffPerElement= totalDiff/size(D,2);
+diffPerCol= totalDiff/size(D,2);
 end
 
