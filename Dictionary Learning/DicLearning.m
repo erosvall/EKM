@@ -38,7 +38,16 @@ G = X-D*A;
 disp(strcat('Done! Result: norm(X-X_hat)=', num2str(norm(G))));
 plot(F(:,1),F(:,2))
 
+% Dictionary comparison
+Dcopy = D0;
+totalDiff = 0;
 
+for i = 1:size(D:2)
+    temp = D(:,i) - Dcopy;
+    [minval, minarg] = min(sqrt(sum(temp.^2)));
+    Dcopy(:,minarg) = [];
+    totalDiff = totalDiff + minval;
+end
 
 
 
