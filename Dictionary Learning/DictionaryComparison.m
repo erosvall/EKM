@@ -10,6 +10,6 @@ for i = 1:size(D,2)
     totalDiff = totalDiff + (1-maxval);
 end
 
-diffPerElement= totalDiff/(size(D,1)*size(D,2));
+diffPerElement= totalDiff/size(D,2);
 end
 
