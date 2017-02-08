@@ -5,9 +5,10 @@ function [ D ] = MOD( X, A )
 %   Moore-Penrose pseudoinverse and applies it to signal X.
 
 % MOD w. Moore-Penrose pseudoinverse
-R = (A'*A)\A';
-%(X*W')/(W*W'); A')/(A*A')
-D = normc((X*R));
+%R = (A'*A)\A';
+R = A'/(A*A');
+%(X*W')/(W*W'); (X*A')/(A*A')
+D = normc(X*R);
 
 end
 

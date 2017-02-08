@@ -10,8 +10,8 @@ n = 100; % dimension av data
 p = 1000; % antal data
 m = 300; % storlek av dictionary
 
-D0 = normc(rand(n,m)); 
-D =  normc(rand(n,m));
+D0 = dictmake(n,m,'U');
+D =  dictmake(n,m,'U');
 
 disp(strcat('Initial difference ',num2str(DictionaryComparison(D,D0))))
 
@@ -24,22 +24,21 @@ end
 
 X = D0*A0;
 
-w = warning('off','all');
+w = warning('on','all');
 P1 = [];
 A = zeros(m,p);
 P2 = [];
+P1 = [P1; 0 DictionaryComparison(D,D0)];
 for i = 1:15
     A = OMP(D,X,sparcity);
     D = MOD(X,A);
-    %D = KSVD2(D,X,A);
+    %D = SVDDictionaryUpdate(D,X,A);
     [totalDiff, diffPerCol] = DictionaryComparison(D,D0);
     P1 = [P1; i totalDiff];
-    i
+    disp(i)
 end
-[D0(:,1) D(:,1)]
 figure(1)
 plot(P1(:,1),P1(:,2))
-
 
 disp(strcat('Done! Result: DicComp(D-D0)=', num2str(DictionaryComparison(D,D0))));
 
