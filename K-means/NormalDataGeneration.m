@@ -5,11 +5,13 @@ function [ Data ] = NormalDataGeneration( numberOfClusters,sizeOfCluster,dimensi
 n  = numberOfClusters;
 s = sizeOfCluster;
 d = dimensionOfData;
-Data = zeros(n*s,d);
+Data = [];
 
 for i = 1:n
-    mu = rand();
-    sigma = abs(rand())/10;
-    Data((i-1)*s+1:(i-1)*s+1+s,:) = normrnd(mu,sigma,s,d);
-
+    mu = rand(1,d)*20;
+    A = rand(d,d);
+    sigma = round((tril(A) + tril(A)'),3);
+    
+    
+    Data = [Data; mvnrnd(mu,sigma,s)];
 end
