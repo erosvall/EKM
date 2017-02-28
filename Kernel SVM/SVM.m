@@ -35,22 +35,15 @@ r = quadprog(P,q,G,h);
 
 %%
 threshold = 10^(-05);
-slackPressure = 10^(5);
-nonZeroAlpha = find(r>threshold && r<slackPressure);
+slackPressure = 10^(2);
+nonZeroAlpha = find(r > threshold & r < slackPressure);
 res = [];
 k = 1;
 for i = nonZeroAlpha'
     res(k,:) = [r(i), D(i,:)];
     k = k + 1;
 end
-%% Generate Contour plot
-X = min(D):0.1:max(D);
-Y = min(D(:,2)):0.1:max(D(:,2));
-grid = [X;Y];
 
-%% Plot data
-figure
-scatter(D(:,1),D(:,2))
-hold on
-% contour(classifySVM([19,10],res),[-1,0,1]) Måste vi ha fancy plot? Funkar
-% ju ändå bara i 2d?
+%% Verify with datapoint
+testPoint = [19,10];
+sign(classifySVM(testPoint,res,'lin'))
