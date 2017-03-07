@@ -8,7 +8,7 @@ sparcity  = 10; % sparcit
 
 n = 100; % dimension av data
 p = 1000; % antal data
-m = 300; % storlek av dictionary
+m = 200; % storlek av dictionary
 
 D0 = dictmake(n,m,'U');
 D =  dictmake(n,m,'U');
@@ -28,13 +28,13 @@ w = warning('on','all');
 P1 = [];
 A = zeros(m,p);
 P2 = [];
-P1 = [P1; 0 DictionaryComparison(D,D0)];
-for i = 1:15
+%P1 = [P1; 0 DictionaryComparison(D,D0)];
+for i = 1:500
     A = OMP(D,X,sparcity);
     D = MOD(X,A);
     %D = SVDDictionaryUpdate(D,X,A);
     [totalDiff, diffPerCol] = DictionaryComparison(D,D0);
-    P1 = [P1; i totalDiff];
+    P1 = [P1; i diffPerCol];
     disp(i)
 end
 figure(1)

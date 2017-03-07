@@ -1,7 +1,7 @@
 %% Add Images to working directory
 % Make sure path is correct for your computer. But not you Viktor
-path = '/Users/erikrosvall/Dropbox/Kex/yalefaces/training/';
-%path = '/Users/Viktor/Dropbox/KTH/År 3/Period 3/Kex/yalefaces/training/';
+%path = '/Users/erikrosvall/Dropbox/Kex/yalefaces/training/';
+path = '/Users/Viktor/Dropbox/KTH/År 3/Period 3/Kex/yalefaces/training/';
 addpath(genpath(path));
 
 
@@ -61,8 +61,8 @@ for q = 1:9
 
     %% Generate test system
     %clc
-    path = '/Users/erikrosvall/Dropbox/Kex/yalefaces/test/';
-    %path1 = '/Users/Viktor/Dropbox/KTH/År 3/Period 3/Kex/yalefaces/test/';
+    %path = '/Users/erikrosvall/Dropbox/Kex/yalefaces/test/';
+    path = '/Users/Viktor/Dropbox/KTH/År 3/Period 3/Kex/yalefaces/test/';
     prob = [];
 
     addpath(genpath(path));
