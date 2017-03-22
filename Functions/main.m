@@ -57,9 +57,16 @@ load '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/
 
 load '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/test_batch.mat'
 
+%% Multi SVM
+clear all
+load MNISTData.mat
 
+datasize = 100;
 
+features = imagesTrain(:,1:datasize);
+labels = labelsTrain(1:datasize,1)'+1;
 
+res =  multiSVM(features,labels,'lin',Inf,10e-5);
 
 
 
