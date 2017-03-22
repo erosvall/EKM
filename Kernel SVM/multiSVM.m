@@ -54,7 +54,7 @@ if nargin(4) == ''
 end
 
 if nargin(5) == ''
-    slackPressure = 0;
+    slackPressure = inf;
 end
 
 for k = 1:size(unique(labels),1)
