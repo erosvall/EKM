@@ -29,7 +29,7 @@ for i = 1:n
 end
 q = -ones(n,1);
 h = zeros(2*n,1); % Constraint on optimization criterion Ax =< b
-G = -eye(2*n,n);
+G = -speye(2*n,n);
 r = quadprog(P,q,G,h);
 
 
@@ -40,10 +40,10 @@ nonZeroAlpha = find(r > threshold & r < slackPressure);
 res = [];
 k = 1;
 for i = nonZeroAlpha'
-    res(k,:) = [r(i), D(i,:)];
+    res(1,k,:) = [r(i), D(i,:)];
     k = k + 1;
 end
 
 %% Verify with datapoint
-testPoint = [19,10];
-sign(classifySVM(testPoint,res,'lin'))
+testPoint = [-13,-6];
+classifySVM(testPoint,res,'lin')
