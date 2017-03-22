@@ -3,16 +3,22 @@
 clear all
 load MNISTData.mat
 
-datasize = 6000;  %max 60000
-hiddenLayers = 1000;
+datasize = 10000;  
 
 X = imagesTrain(:,1:datasize);
 L = labelsTrain(1:datasize,1)';
-[Wi, Wo] = ELMtrain(X,L,hiddenLayers);
 
-testL = ELMclassifier(imagesTest,Wi,Wo);
-disp('Accurracy on MNIST')
-accuracy = nnz(testL == labelsTest')/size(testL,2)
+hiddenLayers = 100:100:2000;
+error  =[];
+
+
+for i = hiddenLayers
+    [Wi, Wo] = ELMtrain(X,L,i);
+    testL = ELMclassifier(imagesTest,Wi,Wo);
+    error = [error 1-(nnz(testL == labelsTest')/size(testL,2))];
+end
+
+scatter(hiddenLayers,error)
 
 %% ELM on YaleFaces 165 pictures from 15 classes. 
 clear all
@@ -43,4 +49,21 @@ labels = labelsTrain(1:datasize,1)'+1; % numrerade från 0-9
 testL = GaussianClassifier(imagesTest,mu,sigma);
 
 accuracy = nnz(testL == labelsTest'+1)/size(testL,2)
+
+%% CIFAR 10 dataset
+clear all
+load '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/data_batch_1.mat'
+
+
+load '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/test_batch.mat'
+
+
+
+
+
+
+
+
+
+
 

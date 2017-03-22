@@ -11,17 +11,17 @@ rlu = @(w,x,b) max(0,w*x+b);
 sigmoid = @(w,x,b) 1./(1+exp((w*x + b)));
 %% Training!
 N = 6000; %number of datapoints
-h = 2000; % number of hidden layers
+h = 1000; % number of hidden layers
 
 X = imagesTrain(1:end,1:N);         % Smaller feature matrix 
 sublables = labelsTrain(1:N,1);     % correspoinding lables
 
-B = ones(h,size(X,2));  % Initialize bias term
+B = ones(h,size(X,2));              % Initialize bias term
 C = 2*rand(1,N)-1;
 
-Wr = dictmake( h, size(X,1));      % random weights [-1,1]
+Wr = dictmake( h, size(X,1));       % random weights [-1,1]
 
-sigma = rlu(Wr,X,B);     % sigmoid function (is this kernel?)
+sigma = sigmoid(Wr,X,B);            % sigmoid function (is this kernel?)
          
 
 Y = zeros(10,size(X,2));            % Initialize class matrix
@@ -37,12 +37,11 @@ W1 = Y*pinv(sigma);                 % Calculated weiths in output layer
 Xtest = imagesTest;
 Ytest = labelsTest';
 Btest = ones(h,size(Xtest,2));
-Ctest = 2*rand(1,size(Xtest,2))-1;
 
-sigmatest = rlu(Wr,Xtest,Btest);
+sigmatest = sigmoid(Wr,Xtest,Btest);
 
 Yres = W1 * sigmatest;
-[maxval maxind] = max(Yres,[],1);
+[maxval, maxind] = max(Yres,[],1);
 maxind = maxind-1;
 
 accuracy = nnz(Ytest == maxind)/size(Ytest,2)
