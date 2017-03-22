@@ -11,6 +11,7 @@ rlu = @(w,x,b) max(0,w*x+b);
 sigmoid = @(w,x,b) 1./(1+exp((w*x + b)));
 %% Training!
 N = 6000; %number of datapoints
+
 h = 1000; % number of hidden layers
 
 X = imagesTrain(1:end,1:N);         % Smaller feature matrix 
