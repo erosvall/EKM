@@ -3,13 +3,13 @@
 clear all
 load MNISTData.mat
 
-datasize = 10000;  
+datasize = 60000;  
 
 X = imagesTrain(:,1:datasize);
 L = labelsTrain(1:datasize,1)';
 
-hiddenLayers = 100:100:2000;
-error  =[];
+hiddenLayers = 100:100:3000;
+error = [];
 
 
 for i = hiddenLayers
@@ -33,7 +33,7 @@ L = yaleLabels(1,1:datasize);
 
 testL = ELMclassifier(yaleFeatures(:,datasize+1:end),Wi,Wo);
 disp('Accurracy on yalefaces')
-accuracy = nnz(testL == yaleLabels(1,datasize+1:end))/size(testL,2)
+error = 1 -nnz(testL == yaleLabels(1,datasize+1:end))/size(testL,2)
 
 %% GaussianClassifier on MNIST
 clear all
@@ -48,7 +48,7 @@ labels = labelsTrain(1:datasize,1)'+1; % numrerade från 0-9
 
 testL = GaussianClassifier(imagesTest,mu,sigma);
 
-accuracy = nnz(testL == labelsTest'+1)/size(testL,2)
+error = 1 - nnz(testL == labelsTest'+1)/size(testL,2)
 
 %% CIFAR 10 dataset
 clear all
