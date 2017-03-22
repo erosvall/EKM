@@ -73,10 +73,10 @@ for k = 1:size(unique(labels),1)
     
     nonZeroAlpha = find(r > threshold & r < slackPressure);
     res = [];
-    k = 1;
+    ii = 1;
     for i = nonZeroAlpha'
-        res(k,:) = [r(i), D(i,:)];
-        k = k + 1; % loop i 
+        res(k,ii,:) = [r(i), features(:,i)', lbl(i)];
+        ii = ii + 1; % loop i rez matrisen
     end
     
     
