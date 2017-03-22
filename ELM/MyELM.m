@@ -7,8 +7,8 @@ imagesTest = loadMNISTImages('t10k-images.idx3-ubyte');
 labelsTest = loadMNISTLabels('t10k-labels.idx1-ubyte');
 
 %% Training!
-N = 60000; %number of datapoints
-h = 2000; % number of hidden layers
+N = 6000; %number of datapoints
+h = 200; % number of hidden layers
 
 
 
