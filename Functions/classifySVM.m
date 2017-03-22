@@ -9,7 +9,7 @@ for j = 1:size(alphas,1)
         case {'lin'}
             v = 0;
             for i = 1:size(alphas,2)
-                v = v + alphas(j,i,1)*alphas(j,i,end)*linKerl(newV, reshape(alphas(j,i,2:end-1),[size(alphas(j,i,2:end-1),3),1]));                
+                v = v + alphas(j,i,1)*alphas(j,i,end)*linKerl(newV', reshape( alphas(j,i,2:end-1) , [size(alphas(j,i,2:end-1),3),1] ) ) ;                
             end
             memory(j) = v;
             class(j) = sign(v);
@@ -31,7 +31,7 @@ end
 if size( find(class == 1) , 2) == 1
     res = find(class == 1);
 else
-    [~, res ] = max(memory);
+    [~, res] = max(memory);
 end
 
 end

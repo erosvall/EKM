@@ -42,12 +42,12 @@ function [ res ] = multiSVM( features, labels, kernel, slackPressure, threshold 
 % end
 
 % Set up necessary stuff...
-n = size(features,1); % Length of data
+n = size(features,2); % numberof of data
 P = zeros(n,n);
 q = -ones(n,1);
 h = zeros(2*n,1); % Constraint on optimization criterion Ax =< b
 G = -speye(2*n,n);
-lbl = labels; % temporary labels holder that we can manipulate for each iteraton.
+lbl = labels'; % temporary labels holder that we can manipulate for each iteraton.
 
 % if nargin(4) == ''
 %     threshold = 10^(-05);
@@ -64,7 +64,7 @@ for k = 1:size(unique(labels),1)
     % Set up optimization program
     for i = 1:n
         for j = 1:n
-            P(i,j) = lbl(i)*lbl(j)*linKerl(features(:,i),features(:,j));
+            P(i,j) = lbl(i)*lbl(j)*linKerl(features(:,i)',features(:,j));
         end
     end
     r = quadprog(P,q,G,h);

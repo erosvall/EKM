@@ -61,13 +61,13 @@ load '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/
 clear all
 load MNISTData.mat
 
-datasize = 100;
+datasize = 1000;
 
 features = imagesTrain(:,1:datasize);
 labels = labelsTrain(1:datasize,1)'+1;
 
 res =  multiSVM(features,labels,'lin',Inf,10e-5);
-
+testL = classifySVM(imagesTest(:,1123),res,'lin')
 
 
 
