@@ -61,16 +61,18 @@ load '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/
 clear all
 load MNISTData.mat
 
-datasize = 1000;
+datasize = 900;
+
+kernelType = 'pol'; % Or 'lin' or 'rad'. Just nu jobbar vi med kvadratisk Kernel
+testSample = 50;
 
 features = imagesTrain(:,1:datasize);
 labels = labelsTrain(1:datasize,1)'+1;
 
-res =  multiSVM(features,labels,'lin',Inf,10e-5);
-testL = classifySVM(imagesTest(:,1123),res,'lin')
+res =  multiSVM(features,labels,kernelType,10e2,10e-5);
+testL = classifySVM(imagesTest(:,1:testSample),res,kernelType);
 
 
-
-
+error = 1 - nnz(testL == labelsTest(1:testSample)'+1)/size(testL,2)
 
 
