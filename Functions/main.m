@@ -52,10 +52,20 @@ error = 1 - nnz(testL == labelsTest'+1)/size(testL,2)
 
 %% CIFAR 10 dataset
 clear all
-load '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/data_batch_1.mat'
+%A = load('/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/data_batch_1.mat');
+%B = load('/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/test_batch.mat');
+[X1,Y1,y1] = LoadBatch('data_batch_1.mat');
+[X2,Y2,y2] = LoadBatch('data_batch_2.mat');
+[X3,Y3,y3] = LoadBatch('data_batch_3.mat');
+[Xtest,Ytest,ytest] = LoadBatch('test_batch.mat');
 
+X = [X1 X2 X3];
+y = [y1 y2 y3];
 
-load '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/test_batch.mat'
+[Wi, Wo] = ELMtrain(X,y',250);
+testL = ELMclassifier(Xtest,Wi,Wo);
+
+acc =  (nnz(testL == ytest')/size(testL,2)) % 30%-ish. helt ok.
 
 %% Multi SVM
 clear all
