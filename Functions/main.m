@@ -52,9 +52,12 @@ error = 1 - nnz(testL == labelsTest'+1)/size(testL,2)
 
 %% CIFAR 10 dataset
 clear all
-load '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/data_batch_1.mat'
-
-load '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/test_batch.mat'
+%A = load('/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/data_batch_1.mat');
+%B = load('/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/test_batch.mat');
+[X1,Y1,y1] = LoadBatch('data_batch_1.mat');
+[X2,Y2,y2] = LoadBatch('data_batch_2.mat');
+[X3,Y3,y3] = LoadBatch('data_batch_3.mat');
+[Xtest,Ytest,ytest] = LoadBatch('test_batch.mat');
 
 %% Multi SVM
 clear all
