@@ -29,10 +29,10 @@ P1 = [];
 A = zeros(m,p);
 P2 = [];
 %P1 = [P1; 0 DictionaryComparison(D,D0)];
-for i = 1:500
+for i = 1:1
     A = OMP(D,X,sparcity);
-    D = MOD(X,A);
-    %D = SVDDictionaryUpdate(D,X,A);
+    %D = MOD(X,A);
+    D = SVDDictionaryUpdate(D,X,A);
     [totalDiff, diffPerCol] = DictionaryComparison(D,D0);
     P1 = [P1; i diffPerCol];
     disp(i)

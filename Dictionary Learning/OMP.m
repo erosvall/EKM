@@ -1,4 +1,4 @@
-function [ A ] = OMP(  dictionary,signal, sparcity )
+function [ A ] = OMP(dictionary, signal, sparcity)
 %OMPfunc takes the signal to match against and a dictionary
 % and returns a sparse Matrix A with the best possible representation
 % of the signal. Sparcity gives us the number of atoms per signal in A
