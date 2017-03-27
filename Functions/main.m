@@ -59,23 +59,15 @@ clear all
 [X3,Y3,y3] = LoadBatch('data_batch_3.mat');
 [Xtest,Ytest,ytest] = LoadBatch('test_batch.mat');
 
-X = [X1 X2 X3];
-y = [y1 y2 y3];
-
-[Wi, Wo] = ELMtrain(X,y',250);
-testL = ELMclassifier(Xtest,Wi,Wo);
-
-acc =  (nnz(testL == ytest')/size(testL,2)) % 30%-ish. helt ok.
-
 %% Multi SVM
 clear all
 load MNISTData.mat
 
-datasize = 80;
+datasize = 300;
 testSample = 30;
 
-kernelType = 'pol'; % 'pol' // 'lin' // 'rad'. Just nu jobbar vi med kvadratisk Kernel
-kernelParameter = 4; % Takes contextual value depending on Kernel choosen. But can be either p or sigma
+kernelType = 'rad'; % 'pol' // 'lin' // 'rad'. Just nu jobbar vi med kvadratisk Kernel
+kernelParameter = 200; % Takes contextual value depending on Kernel choosen. But can be either p or sigma
 
 % Hämta data
 features = imagesTrain(:,1:datasize);
