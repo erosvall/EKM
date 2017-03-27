@@ -3,7 +3,7 @@
 clear all
 load MNISTData.mat
 
-datasize = 60000;  
+datasize = 10000;  
 
 X = imagesTrain(:,1:datasize);
 L = labelsTrain(1:datasize,1)';
