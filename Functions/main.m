@@ -54,18 +54,17 @@ error = 1 - nnz(testL == labelsTest'+1)/size(testL,2)
 clear all
 load '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/data_batch_1.mat'
 
-
 load '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Datasets/cifar-10-batches-mat/test_batch.mat'
 
 %% Multi SVM
 clear all
 load MNISTData.mat
 
-datasize = 80;
+datasize = 300;
 testSample = 30;
 
-kernelType = 'pol'; % 'pol' // 'lin' // 'rad'. Just nu jobbar vi med kvadratisk Kernel
-kernelParameter = 4; % Takes contextual value depending on Kernel choosen. But can be either p or sigma
+kernelType = 'rad'; % 'pol' // 'lin' // 'rad'. Just nu jobbar vi med kvadratisk Kernel
+kernelParameter = 200; % Takes contextual value depending on Kernel choosen. But can be either p or sigma
 
 % Hämta data
 features = imagesTrain(:,1:datasize);
