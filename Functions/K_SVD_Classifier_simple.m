@@ -36,6 +36,7 @@ end
 % Initializing dictionary and 
 rng(1337);
 D = normc(2*rand(d,m) - 1);
+rng(1337);
 W = normc(2*rand(k,m) - 1);
 
 

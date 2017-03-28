@@ -7,13 +7,15 @@ function [D,W] = KSVD_Classifier(TrainingData, TrainingLabels, DictionarySize, I
 % DictionarySize:   Number of atoms in dictionary
 % Lambdas:          Importance of correcly classifying 
 % Sparcity:         Numer of atoms each data is reprecented 
+% Dependencies:
+% OMP.m and SVDDictionaryUpdate.m
 
 % --- Non-user defined constants --- 
 k = size(unique(TrainingLabels),1);    % Number of classes
 d = size(TrainingData,1);              % Dimension of TrainingData
 N = size(TrainingData,2);              % Number of training data
 
-rng(1337);
+
 
 % Initializing one-hot labelmatrix
 T = zeros(k,N);
@@ -49,7 +51,7 @@ for i = 1:Iterations
     
        
 end
-
-D = D(1:end-k,:);
 W = D(end-k+1:end,:);
-return 
+D = D(1:end-k,:);
+
+end
