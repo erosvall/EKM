@@ -34,7 +34,7 @@ for i = 1:20
     subplot(4,5,i)
     imshow(vec2mat(realPics(:,i),28)');
 end
-
+figure
 X = OMP(D,Y,5);
 sparcePics = D*X;
 for i = 1:20

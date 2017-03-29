@@ -79,7 +79,7 @@ accsave = [accsave; Trainacc, Testacc];
 
 
 
-% -------- Vizualizing the dicpics --------------------
+% --------    Vizualizing the dicpics    -----------
 sparcePics = D(1:end-k,:)*X;
 %sparcePics = reshape(sparcePics,[28, 28, 200]);
 for i = 1:20
