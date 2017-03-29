@@ -80,4 +80,31 @@ testL = classifySVM(imagesTest(:,1:testSample), res, kernelType, kernelParameter
 % Beräkna fel
 error = 1 - nnz(testL == labelsTest(1:testSample)'+1)/size(testL,2)
 
+%% KSVD-Classifier
+trainsize = 400;
+valsize = 100;
+
+A = load('MNISTData.mat');
+Y = A.imagesTrain(:,1:trainsize); y = A.labelsTrain(1:trainsize)+1;
+Yv = A.imagesTest(:,1:valsize); yv = A.labelsTest(1:valsize)+1;
+
+DictionarySize = 1960;
+UpdateIterations = 20;
+Lambda = 0.4;
+Sparcity = 5;
+
+[D,W] = KSVD_Classifier(Y,y,DictionarySize,UpdateIterations,Lambda,Sparcity);
+
+[trainLabels,sparsedata] = KSVD_Labeler(Y,D,W,Sparcity);
+TrainAccuracy = nnz(trainLabels == y')/size(y,1)
+
+testLabels = KSVD_Labeler(Yv,D,W,Sparcity);
+TestAccuracy = nnz(testLabels == yv')/size(yv,1)
+
+
+
+
+
+
+
 
