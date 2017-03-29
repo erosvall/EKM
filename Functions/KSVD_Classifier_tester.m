@@ -1,6 +1,6 @@
 %% K-SVD Classifier
-%clear all
-%close all
+clear all
+close all
 
 trainsize = 300;
 valsize = 100;
@@ -12,7 +12,7 @@ Yv = A.imagesTest(:,1:valsize);
 yv = A.labelsTest(1:valsize)+1;
 
 
-[D1,W1] = KSVD_Classifier(Y,y,1960,20,0.4,5);
+[D,W] = KSVD_Classifier(Y,y,1960,20,0.4,5);
 
 
 %% Compute accuracy.
