@@ -15,10 +15,9 @@ k = size(unique(TrainingLabels),1);    % Number of classes
 d = size(TrainingData,1);              % Dimension of TrainingData
 N = size(TrainingData,2);              % Number of training data
 
-
-
 % Initializing one-hot labelmatrix
 T = zeros(k,N);
+
 for i = 1:N
     T(TrainingLabels(i),i) = 1;
 end
@@ -27,18 +26,9 @@ end
 D = normc(2*rand(d,DictionarySize) - 1);
 W = normc(2*rand(k,DictionarySize) - 1);
 
-%Initializing sparcerepresentation
-% X = zeros(DictionarySize,N);
-% for i = 1:N
-%     for j = 1:Sparcity
-%        X(randi(size(X,1),1),i) = rand(1); 
-%     end
-% end
-
 % Concatenating matrices for classification 
 TrainingData = [TrainingData; Lambda*T];
 D = [D; Lambda*W];
-
 
 for i = 1:Iterations
     X = OMP(D,TrainingData,Sparcity);
@@ -47,11 +37,9 @@ for i = 1:Iterations
     %Normalizing dictionary part of D matrix
     colnorm = sqrt(sum(D(1:end-k,:).*D(1:end-k,:)));
     D(end-k+1:end,:) = D(end-k+1:end,:)./colnorm;
-    D(1:end-k,:) = normc(D(1:end-k,:));
-    
-       
+    D(1:end-k,:) = normc(D(1:end-k,:));   
 end
-W = D(end-k+1:end,:);
-D = D(1:end-k,:);
 
+W = D(end-k+1:end,:); 
+D = D(1:end-k,:);
 end

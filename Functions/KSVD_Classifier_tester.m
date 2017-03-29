@@ -2,7 +2,7 @@
 clear all
 close all
 
-trainsize = 300;
+trainsize = 400;
 valsize = 100;
 
 A = load('MNISTData.mat');
@@ -21,7 +21,7 @@ T = W*X;
 [~,trainmaxarg] = max(T);
 Trainacc = nnz(trainmaxarg == y')/size(y,1)
 
-Xv = OMP(D,Yv,5); % Finding the sparce rep
+Xv = OMP(D,Yv,10); % Finding the sparce rep
 That = W*Xv;
 [~,testmaxarg] = max(That);
 Testacc = nnz(testmaxarg == yv')/size(yv,1)
