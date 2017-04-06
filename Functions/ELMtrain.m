@@ -12,11 +12,10 @@ h = hiddenLayers;
 N = size(X,2);                      % Number of datapoints
 
 B = ones(h,size(X,2));              % Initialize bias term
+rng(1337)
+Wi = normc(2*rand(h,size(X,1))-1);         % random weights [-1,1]
 
-Wi = 2*rand(h,size(X,1))-1;         % random weights [-1,1]
-Wi = Wi.*(ones(size(Wi,1),1)*(1./sqrt(sum(Wi.*Wi)))); % Normalize
-       
-sigma = sigmoid(Wi,X,B);            % Calculating hiden layer response using sigmoid 
+sigma = rlu(Wi,X,B);            % Calculating hiden layer response using sigmoid 
          
 Y = zeros(size(unique(L),2),size(X,2));            % Initialize class matrix
 
