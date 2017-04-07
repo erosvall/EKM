@@ -20,12 +20,12 @@ function [ inputWeights, outputWeights ] = ELMwithKernelTraining(features, label
     for i = 1:size(L,2)
         Y(L(1,i)+1,i) = 1;
     end
-    
+   
     sigma = rlu(Wi,X,b); %applying nonlinear function
     %%sigma = polyKerl(sigma',sigma,2); % applying polynomial kernel
     
-    Wo = Y*pinv(sigma.^3);
-
+    Wo = Y*((sigma'*sigma+lambda*eye(size(sigma,2)))\sigma');
+    
     inputWeights = Wi;
     outputWeights = Wo;
 end

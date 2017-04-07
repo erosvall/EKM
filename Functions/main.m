@@ -112,25 +112,27 @@ datasize = 10000;
 X = imagesTrain(:,1:datasize);
 L = labelsTrain(1:datasize,1)';
 
-hiddenLayers = 4*size(X,1);
+hiddenLayers = 2*size(X,1);
+for lambda = 20:1:30
+    lambda
+    [Wi, Wo] = ELMwithKernelTraining(X,L,hiddenLayers,lambda);
 
-[Wi, Wo] = ELMwithKernelTraining(X,L,hiddenLayers,0);
+    kernelTrainL =  ELMwithKernelClassifier(X,Wi,Wo,'rlu');
+    kernelTrainAccuracy = nnz(kernelTrainL == L)./size(L,2)
 
-kernelTrainL =  ELMwithKernelClassifier(X,Wi,Wo,'rlu');
-kernelTrainAccuracy = nnz(kernelTrainL == L)./size(L,2)
+    kernelTestL = ELMwithKernelClassifier(imagesTest,Wi,Wo,'rlu');
+    kernelTestAccuracy = (nnz(kernelTestL == labelsTest')/size(kernelTestL,2))
 
-kernelTestL = ELMwithKernelClassifier(imagesTest,Wi,Wo,'rlu');
-kernelTestAccuracy = (nnz(kernelTestL == labelsTest')/size(kernelTestL,2))
-
-
-[W1,W0] = ELMtrain(X,L,hiddenLayers);
-
-
-trainL = ELMclassifier(X,W1,W0,'rlu');
-trainAccuracy = (nnz(trainL == L)/size(L,2))
-
-testL = ELMclassifier(imagesTest,W1,W0,'rlu');
-testAccuracy = (nnz(testL == labelsTest')/size(testL,2))
+    disp('-----------')
+end
+% [W1,W0] = ELMtrain(X,L,hiddenLayers);
+% 
+% 
+% trainL = ELMclassifier(X,W1,W0,'rlu');
+% trainAccuracy = (nnz(trainL == L)/size(L,2))
+% 
+% testL = ELMclassifier(imagesTest,W1,W0,'rlu');
+% testAccuracy = (nnz(testL == labelsTest')/size(testL,2))
 
 
 

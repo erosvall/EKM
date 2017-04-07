@@ -18,7 +18,7 @@ function [ labels ] = ELMwithKernelClassifier(features, inputWeights, outputWeig
     
     %sigmatest = polyKerl(sigmatest',sigmatest,2);
     
-    Yres = outputWeights * sigmatest.^3 ;
+    Yres = outputWeights * sigmatest ;
     [~, maxind] = max(Yres,[],1);
     labels = maxind-1;
     
