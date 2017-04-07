@@ -80,18 +80,60 @@ testL = classifySVM(imagesTest(:,1:testSample), res, kernelType, kernelParameter
 % Beräkna fel
 error = 1 - nnz(testL == labelsTest(1:testSample)'+1)/size(testL,2)
 
-%% KSVD-Classifier
-trainsize = 400;
-valsize = 100;
+%% KSVD-Classifier MNIST
+close all
+valsize = 10000;
+trainsize = 60000;
+DictionarySize = 1500;
 
-A = load('MNISTData.mat');
-Y = A.imagesTrain(:,1:trainsize); y = A.labelsTrain(1:trainsize)+1;
-Yv = A.imagesTest(:,1:valsize); yv = A.labelsTest(1:valsize)+1;
-
-DictionarySize = 1960;
-UpdateIterations = 20;
+UpdateIterations = 10;
 Lambda = 0.4;
 Sparcity = 5;
+Acc = [];
+
+A = load('MNISTData.mat');
+for Sparcity = 5
+    Y = A.imagesTrain(:,1:trainsize); y = A.labelsTrain(1:trainsize)+1;
+    Yv = A.imagesTest(:,1:valsize); yv = A.labelsTest(1:valsize)+1;
+    
+    [D,W] = KSVD_Classifier(Y,y,DictionarySize,UpdateIterations,Lambda,Sparcity);
+
+    trainLabels = KSVD_Labeler(Y,D,W,Sparcity);
+    TrainAccuracy = nnz(trainLabels == y')/size(y,1)
+
+    testLabels = KSVD_Labeler(Yv,D,W,Sparcity);
+    TestAccuracy = nnz(testLabels == yv')/size(yv,1)
+    Acc = [Acc; Sparcity, TrainAccuracy, TestAccuracy];
+    Sparcity
+end
+%%
+scatter(Acc(:,1),Acc(:,2))
+hold on
+scatter(Acc(:,1),Acc(:,3))
+legend('Training data', 'Validation data')
+xlabel('Lambda')
+ylabel('Accuracy')
+
+%% KSVD-Classifier CIFAR-10
+clear all
+close all
+
+trainsize = 500;
+valsize = 100;
+
+[X1,Y1,y1] = LoadBatch('data_batch_1.mat');
+[X2,Y2,y2] = LoadBatch('data_batch_2.mat');
+[X3,Y3,y3] = LoadBatch('data_batch_3.mat');
+[Xtest,Ytest,ytest] = LoadBatch('test_batch.mat');
+
+Y = X1(:,1:trainsize); y = y1(1:trainsize);
+Yv = X2(:,1:valsize); yv = y2(1:valsize);
+
+
+DictionarySize = 3000;
+UpdateIterations = 20;
+Lambda = 0.4;
+Sparcity = 10;
 
 [D,W] = KSVD_Classifier(Y,y,DictionarySize,UpdateIterations,Lambda,Sparcity);
 
@@ -135,9 +177,43 @@ end
 % testAccuracy = (nnz(testL == labelsTest')/size(testL,2))
 
 
+%% Visualize CIFAR
+close all
 
+for i=1:10
+    im = reshape(Y(:,i), 32, 32, 3);
+    s_im{i} = (im - min(im(:))) / (max(im(:)) - min(im(:))); 
+    s_im{i} = permute(s_im{i}, [2, 1, 3]);
+end
+figure(1)
+montage(s_im);
 
+X = OMP(D,Y,5);
+sparcePics = D*X;
+for i=1:10
+    im = reshape(sparcePics(:,i), 32, 32, 3);
+    s_im{i} = (im - min(im(:))) / (max(im(:)) - min(im(:))); 
+    s_im{i} = permute(s_im{i}, [2, 1, 3]);
+end
+figure(2)
+montage(s_im);
 
+testPics = Yv;
+for i=1:10
+    im = reshape(testPics(:,i), 32, 32, 3);
+    s_im{i} = (im - min(im(:))) / (max(im(:)) - min(im(:))); 
+    s_im{i} = permute(s_im{i}, [2, 1, 3]);
+end
+figure(3)
+montage(s_im);
 
-
+Xv = OMP(D,Yv,5);
+sparceTestPics = D*Xv;
+for i=1:10
+    im = reshape(sparceTestPics(:,i), 32, 32, 3);
+    s_im{i} = (im - min(im(:))) / (max(im(:)) - min(im(:))); 
+    s_im{i} = permute(s_im{i}, [2, 1, 3]);
+end
+figure(4)
+montage(s_im);
 

@@ -29,7 +29,7 @@ W = normc(2*rand(k,DictionarySize) - 1);
 % Concatenating matrices for classification 
 TrainingData = [TrainingData; Lambda*T];
 D = [D; Lambda*W];
-
+disp('Iteration')
 for i = 1:Iterations
     X = OMP(D,TrainingData,Sparcity);
     D = SVDDictionaryUpdate(D,TrainingData,X);
@@ -37,7 +37,9 @@ for i = 1:Iterations
     %Normalizing dictionary part of D matrix
     colnorm = sqrt(sum(D(1:end-k,:).*D(1:end-k,:)));
     D(end-k+1:end,:) = D(end-k+1:end,:)./colnorm;
-    D(1:end-k,:) = normc(D(1:end-k,:));   
+    D(1:end-k,:) = normc(D(1:end-k,:));
+    
+    disp(i)
 end
 
 W = D(end-k+1:end,:); 
