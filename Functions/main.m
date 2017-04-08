@@ -3,19 +3,19 @@
 clear all
 load MNISTData.mat
 
-datasize = 10000;  
+datasize = 2000;  
 
 X = imagesTrain(:,1:datasize);
 L = labelsTrain(1:datasize,1)';
 
-hiddenLayers = 100:100:3000;
-error = [];
 
+error = [];
+hiddenLayers = size(X,2)*2;
 
 for i = hiddenLayers
     [Wi, Wo] = ELMtrain(X,L,i);
     testL = ELMclassifier(imagesTest,Wi,Wo);
-    error = [error 1-(nnz(testL == labelsTest')/size(testL,2))];
+    error = [error 1-(nnz(testL == labelsTest')/size(testL,2))]
 end
 
 scatter(hiddenLayers,error)
@@ -144,26 +144,25 @@ testLabels = KSVD_Labeler(Yv,D,W,Sparcity);
 TestAccuracy = nnz(testLabels == yv')/size(yv,1)
 
 %% ELM with kernel
-
-
 clear all
 load MNISTData.mat
 
-datasize = 10000;  
+datasize = 3000;  
 
 X = imagesTrain(:,1:datasize);
 L = labelsTrain(1:datasize,1)';
 
-hiddenLayers = 2*size(X,1);
-for lambda = 20:1:30
+hiddenLayers = 4*size(X,1);
+polyKerlDegree = 3;
+for lambda = 0.01
     lambda
-    [Wi, Wo] = ELMwithKernelTraining(X,L,hiddenLayers,lambda);
+    [Wi, Wo] = ELMwithKernelTraining(X,L,hiddenLayers,lambda,polyKerlDegree);
 
-    kernelTrainL =  ELMwithKernelClassifier(X,Wi,Wo,'rlu');
+    kernelTrainL =  ELMwithKernelClassifier(X,Wi,Wo,polyKerlDegree);
     kernelTrainAccuracy = nnz(kernelTrainL == L)./size(L,2)
 
-    kernelTestL = ELMwithKernelClassifier(imagesTest,Wi,Wo,'rlu');
-    kernelTestAccuracy = (nnz(kernelTestL == labelsTest')/size(kernelTestL,2))
+    %kernelTestL = ELMwithKernelClassifier(imagesTest,Wi,Wo,'rlu');
+    %kernelTestAccuracy = (nnz(kernelTestL == labelsTest')/size(kernelTestL,2))
 
     disp('-----------')
 end

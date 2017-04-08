@@ -1,5 +1,6 @@
-function [ labels ] = ELMclassifier(features, inputWeights, outputWeights,NonLinearFunction)
-%UNTITLED4 Summary of this function goes here
+function [ labels ] = ELMclassifier(features, inputWeights, outputWeights,varargin)
+% ELMclassifier.m is given the genereated inputweights and the learnt
+% outputweights from ELMtrain.m to label the new featurevectors given.  
 %   Detailed explanation goes here
 
     rlu = @(w,x,b) max(0,w*x+b);
@@ -7,12 +8,15 @@ function [ labels ] = ELMclassifier(features, inputWeights, outputWeights,NonLin
     
     Btest = ones(size(inputWeights,1),size(features,2));
     
-    switch NonLinearFunction
-        case 'rlu'
-            sigmatest = rlu(inputWeights,features,Btest); 
-        case 'sigmoid'
-            sigmatest = sigmoid(inputWeights,features,Btest);
-        otherwise
+    switch nargin
+        case 4
+            switch varargin{1}                            
+                case 'rlu'
+                    sigmatest = rlu(inputWeights,features,Btest); 
+                case 'sigmoid'
+                    sigmatest = sigmoid(inputWeights,features,Btest);
+            end
+        case 3
             sigmatest = rlu(inputWeights,features,Btest); 
     end
    
