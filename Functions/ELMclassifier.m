@@ -6,23 +6,22 @@ function [ labels ] = ELMclassifier(features, inputWeights, outputWeights,vararg
     rlu = @(w,x,b) max(0,w*x+b);
     sigmoid = @(w,x,b) 1./(1+exp((w*x + b)));
     
-    Btest = ones(size(inputWeights,1),size(features,2));
+    b = ones(size(inputWeights,1),size(features,2));
     
     switch nargin
         case 4
             switch varargin{1}                            
                 case 'rlu'
-                    sigmatest = rlu(inputWeights,features,Btest); 
+                    sigma = rlu(inputWeights,features,b); 
                 case 'sigmoid'
-                    sigmatest = sigmoid(inputWeights,features,Btest);
+                    sigma = sigmoid(inputWeights,features,b);
             end
         case 3
-            sigmatest = rlu(inputWeights,features,Btest); 
+            sigma = rlu(inputWeights,features,b); 
     end
-   
-    Yres = outputWeights * sigmatest;
-    [~, maxind] = max(Yres,[],1);
-    labels = maxind-1;
+    sigma = sigma.^2;
     
+    Yres = outputWeights * sigma;
+    [~, labels] = max(Yres,[],1);
 return
 

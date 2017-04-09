@@ -3,33 +3,30 @@
 clear all
 load MNISTData.mat
 
-datasize = 2000;  
+datasize = 10000;  
 
 X = imagesTrain(:,1:datasize);
-L = labelsTrain(1:datasize,1)';
+L = labelsTrain(1:datasize,1)'+1;
 
+hiddenNodes = size(X,2)*2;
 
-error = [];
-hiddenLayers = size(X,2)*2;
+[Wi, Wo] = ELMtrain(X,L,hiddenNodes);
+trainL = ELMclassifier(X,Wi,Wo);
+trainAccuracy = nnz(trainL == L)/size(trainL,2)
 
-for i = hiddenLayers
-    [Wi, Wo] = ELMtrain(X,L,i);
-    testL = ELMclassifier(imagesTest,Wi,Wo);
-    error = [error 1-(nnz(testL == labelsTest')/size(testL,2))]
-end
-
-scatter(hiddenLayers,error)
+testL = ELMclassifier(imagesTest,Wi,Wo);
+testAccuracy = nnz(testL == labelsTest'+1)/size(testL,2)
 
 %% ELM on YaleFaces 165 pictures from 15 classes. 
 clear all
 load yalefaceData.mat
 
 datasize = 135;
-hiddenLayers = 1000;
+hiddenNodes = 1000;
 
 X = yaleFeatures(:,1:datasize);
 L = yaleLabels(1,1:datasize);
-[Wi, Wo] = ELMtrain(X,L,hiddenLayers);
+[Wi, Wo] = ELMtrain(X,L,hiddenNodes);
 
 testL = ELMclassifier(yaleFeatures(:,datasize+1:end),Wi,Wo);
 disp('Accurracy on yalefaces')
@@ -147,33 +144,33 @@ TestAccuracy = nnz(testLabels == yv')/size(yv,1)
 clear all
 load MNISTData.mat
 
-datasize = 3000;  
+datasize = 10000;  
 
 X = imagesTrain(:,1:datasize);
-L = labelsTrain(1:datasize,1)';
+L = labelsTrain(1:datasize,1)'+1;
 
-hiddenLayers = 4*size(X,1);
-polyKerlDegree = 3;
+hiddenNodes = 1*size(X,1);
+polyKerlDegree = 1;
 for lambda = 0.01
     lambda
-    [Wi, Wo] = ELMwithKernelTraining(X,L,hiddenLayers,lambda,polyKerlDegree);
+    [Wi, Wo] = ELMwithKernelTraining(X,L,hiddenNodes,lambda,polyKerlDegree);
 
     kernelTrainL =  ELMwithKernelClassifier(X,Wi,Wo,polyKerlDegree);
     kernelTrainAccuracy = nnz(kernelTrainL == L)./size(L,2)
 
-    %kernelTestL = ELMwithKernelClassifier(imagesTest,Wi,Wo,'rlu');
-    %kernelTestAccuracy = (nnz(kernelTestL == labelsTest')/size(kernelTestL,2))
+    kernelTestL = ELMwithKernelClassifier(imagesTest,Wi,Wo,polyKerlDegree);
+    kernelTestAccuracy = (nnz(kernelTestL == labelsTest'+1)/size(kernelTestL,2))
 
     disp('-----------')
 end
-% [W1,W0] = ELMtrain(X,L,hiddenLayers);
+
+
+% [Wi, Wo] = ELMtrain(X,L,hiddenNodes);
+% trainL = ELMclassifier(X,Wi,Wo);
+% trainAccuracy = nnz(trainL == L)/size(trainL,2)
 % 
-% 
-% trainL = ELMclassifier(X,W1,W0,'rlu');
-% trainAccuracy = (nnz(trainL == L)/size(L,2))
-% 
-% testL = ELMclassifier(imagesTest,W1,W0,'rlu');
-% testAccuracy = (nnz(testL == labelsTest')/size(testL,2))
+% testL = ELMclassifier(imagesTest,Wi,Wo);
+% testAccuracy = nnz(testL == labelsTest'+1)/size(testL,2)
 
 
 %% Visualize CIFAR

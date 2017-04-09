@@ -4,9 +4,9 @@ function [ inputWeights, outputWeights ] = ELMwithKernelTraining(features, label
 
     switch nargin
         case 4
-            p = 2;
+            p = 1;              % Default kernel degree 
         case 5
-            p = varargin{1};
+            p = varargin{1};    % Custom kernel degree
     end
     
     
@@ -25,20 +25,19 @@ function [ inputWeights, outputWeights ] = ELMwithKernelTraining(features, label
     
     % --- Creation of model matrixes --- 
     b = ones(h,1);              % Initialize bias term
-    rng(1337);
+    rng(1337);                  % Setting the rng seed for repetability
     inputWeights = normc(2*rand(h,d)-1);  % Random weights and normalized
 
     Y = zeros(c,N);             % One-hot label matrix
     for i = 1:N
-        Y(L(1,i)+1,i) = 1;
+        Y(L(1,i),i) = 1;
     end
    
     % --- Calculations ---
     sigma = rlu(inputWeights,X,b);        % Applying nonlinear function
-    size(sigma)
     KernelMatrix = normc(polyKerl(sigma,sigma,p));
     
-    outputWeights = Y*((KernelMatrix+lambda*eye(N))\KernelMatrix'); % Solution to minimizing cost function. 
+    outputWeights = (Y*sigma')*inv(KernelMatrix+lambda*eye(h)); % Solution to minimizing cost function. 
     
 end
 
