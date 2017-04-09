@@ -16,7 +16,7 @@ function [ labels ] = ELMwithKernelClassifier(features, inputWeights, outputWeig
     b = ones(h,1);
 
     sigma = rlu(inputWeights,features,b); 
-   e
+   
     %KernelMatrix = normc(polyKerl(sigma,sigma,p));
     Yres = outputWeights * sigma;
     [~, labels] = max(Yres,[],1);

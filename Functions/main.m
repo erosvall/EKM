@@ -3,18 +3,19 @@
 clear all
 load MNISTData.mat
 
-datasize = 10000;  
+datasize = 60000;  
 
 X = imagesTrain(:,1:datasize);
 L = labelsTrain(1:datasize,1)'+1;
 
-hiddenNodes = size(X,2)*2;
+hiddenNodes = size(X,1)*2;
+rluModification = 3;
 
-[Wi, Wo] = ELMtrain(X,L,hiddenNodes);
-trainL = ELMclassifier(X,Wi,Wo);
+[Wi, Wo] = ELMtrain(X,L,hiddenNodes,rluModification);
+trainL = ELMclassifier(X,Wi,Wo,'rlu',rluModification);
 trainAccuracy = nnz(trainL == L)/size(trainL,2)
 
-testL = ELMclassifier(imagesTest,Wi,Wo);
+testL = ELMclassifier(imagesTest,Wi,Wo,'rlu',rluModification);
 testAccuracy = nnz(testL == labelsTest'+1)/size(testL,2)
 
 %% ELM on YaleFaces 165 pictures from 15 classes. 
@@ -144,14 +145,14 @@ TestAccuracy = nnz(testLabels == yv')/size(yv,1)
 clear all
 load MNISTData.mat
 
-datasize = 10000;  
+datasize = 60000;  
 
 X = imagesTrain(:,1:datasize);
 L = labelsTrain(1:datasize,1)'+1;
 
-hiddenNodes = 1*size(X,1);
-polyKerlDegree = 1;
-for lambda = 0.01
+hiddenNodes = 2*size(X,1);
+polyKerlDegree = 2;
+for lambda = 1e-4
     lambda
     [Wi, Wo] = ELMwithKernelTraining(X,L,hiddenNodes,lambda,polyKerlDegree);
 

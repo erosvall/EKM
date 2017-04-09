@@ -9,6 +9,9 @@ function [ labels ] = ELMclassifier(features, inputWeights, outputWeights,vararg
     b = ones(size(inputWeights,1),size(features,2));
     
     switch nargin
+        nargin
+        case 3
+            sigma = rlu(inputWeights,features,b); 
         case 4
             switch varargin{1}                            
                 case 'rlu'
@@ -16,10 +19,10 @@ function [ labels ] = ELMclassifier(features, inputWeights, outputWeights,vararg
                 case 'sigmoid'
                     sigma = sigmoid(inputWeights,features,b);
             end
-        case 3
-            sigma = rlu(inputWeights,features,b); 
+        case 5
+            sigma = sigma.^(varargin{2});
     end
-    sigma = sigma.^2;
+    
     
     Yres = outputWeights * sigma;
     [~, labels] = max(Yres,[],1);

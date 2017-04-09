@@ -1,4 +1,4 @@
-function [ inputWeights, outputWeights ] = ELMtrain( features, labels, hiddenNodes)
+function [ inputWeights, outputWeights ] = ELMtrain( features, labels, hiddenNodes,varargin)
     % Labels must be numbered 1-c
     %   Detailed explanation goes here
 
@@ -15,7 +15,7 @@ function [ inputWeights, outputWeights ] = ELMtrain( features, labels, hiddenNod
     c = size(unique(L),2);              % Number of classes
     
     % --- Initialize matrixes ---
-    b = ones(h,N);                      % Initialize bias term
+    b = 1;                      % Initialize bias term
     rng(1337)                           % RNG seed for repetability
     inputWeights = normc(2*rand(h,d)-1); 
     
@@ -24,8 +24,16 @@ function [ inputWeights, outputWeights ] = ELMtrain( features, labels, hiddenNod
         Y(L(1,i),i) = 1;
     end
     
+
+    
     % --- Calculations ---
-    sigma = rlu(inputWeights,X,b).^2;                
+    sigma = rlu(inputWeights,X,b);
+    
+    switch nargin
+        case 4
+            sigma = sigma.^varargin{1};
+    end
+    
     outputWeights = Y*pinv(sigma);      % Output matrix minimizing SSE-cost function 
 end
 
