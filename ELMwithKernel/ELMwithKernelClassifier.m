@@ -7,18 +7,19 @@ function [ labels ] = ELMwithKernelClassifier(features, inputWeights, outputWeig
     h = size(inputWeights,1);       % Number of hidden nodes 
     
     switch nargin
-        case 3
-            p = 1;                  % Default kernel degree
         case 4
+            p = 1;                  % Default kernel degree
+        case 5
             p = varargin{1};
     end
     
     b = ones(h,1);
 
     sigma = rlu(inputWeights,features,b); 
-   
-    %KernelMatrix = normc(polyKerl(sigma,sigma,p));
-    Yres = outputWeights * sigma;
+
+    KernelMatrix = normc(polyKerl(sigma,sigma',p));
+    
+    Yres = outputWeights * KernelMatrix;
     [~, labels] = max(Yres,[],1);
 end
 

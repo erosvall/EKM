@@ -35,9 +35,9 @@ function [ inputWeights, outputWeights ] = ELMwithKernelTraining(features, label
    
     % --- Calculations ---
     sigma = rlu(inputWeights,X,b);        % Applying nonlinear function
-    KernelMatrix = normc(polyKerl(sigma,sigma,p));
-    
-    outputWeights = (Y*sigma')*inv(KernelMatrix+lambda*eye(h)); % Solution to minimizing cost function. 
+    KernelMatrix = normc(polyKerl(sigma,sigma',p));
+
+    outputWeights = (Y*sigma')/(KernelMatrix+lambda*eye(h)); % Solution to minimizing cost function. 
     
 end
 
