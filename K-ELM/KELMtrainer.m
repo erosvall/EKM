@@ -1,4 +1,4 @@
-function [ inputWeights, outputWeights ] = KELM(features, labels, hiddenNodes,lambda,kernel,varargin)
+function [ inputWeights, outputWeights, sigma] = KELMtrainer(features, labels, hiddenNodes,lambda,kernel,varargin)
     % Labels must be numbered 1-c
     %   Detailed explanation goes here
 
