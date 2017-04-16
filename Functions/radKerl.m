@@ -6,7 +6,6 @@ function [ res ] = radKerl( a,b,sigma )
     res = zeros(size(a,2),size(b,2));
 
     for i = 1:size(b,2)
-        disp(i)
         bvec = b(:,i);
 
         res(:,i) = exp(-sum((a-bvec).^2)/(2*sigma^2))';
