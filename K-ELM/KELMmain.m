@@ -1,7 +1,7 @@
 clear all
 
 kernel = 'poly';
-kernelparam = 1;
+kernelparam = 2;
 
 %cd /Users/erikrosvall/github/KEX/K-ELM/
 addpath('C:\Users\Viktor Karlsson\Dropbox\KTH\År 3\Period 4\Kex\Datasets');
@@ -219,7 +219,7 @@ for j = 1:10
         L = labelMat(:,1:round(N*i));
 
         hiddenNodes = size(X,1)*2;
-        lambda = 1e-8;
+        lambda = 1e-7;
 
         t = cputime();
         [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam);
@@ -240,5 +240,5 @@ for j = 1:10
     scene15resClassTime = [scene15resClassTime;timeClass];
 end
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
-save(strcat('scene15',kernel,'_p=1'))
+save(strcat('scene15',kernel))
 toc
