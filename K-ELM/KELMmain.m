@@ -1,10 +1,10 @@
 clear all
 
 kernel = 'poly';
-kernelparam = 2;
+kernelparam = 1;
 
 %cd /Users/erikrosvall/github/KEX/K-ELM/
-%addpath('~/Dropbox/Kex/Datasets/Data från Ayman');
+addpath('C:\Users\Viktor Karlsson\Dropbox\KTH\År 3\Period 4\Kex\Datasets');
 %% MNIST
 tic
 disp('mnist')
@@ -35,7 +35,7 @@ for i = datasize
 end
 
 clear imagesTrain imagesTest labelsTest labelsTrain sigma testL wi wo X L t
-save(strcat('MNIST',kernel));
+save(strcat('MNIST',kernel,'_p=1'));
 toc
 %% RANDOM FACES AR
 tic
@@ -84,7 +84,7 @@ for j = 1:100
 end
 
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
-save(strcat('AR',kernel))
+save(strcat('AR',kernel,'_p=1'))
 toc
 %% YALEFACES EXTENDED
 tic
@@ -136,7 +136,7 @@ for j = 1:100
     YFresClassTime = [YFresClassTime;timeClass];
 end
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
-save(strcat('YF',kernel))
+save(strcat('YF',kernel,'_p=1'))
 
 toc
 %% CALTECH101
@@ -189,7 +189,7 @@ for j = 1:10
     CalTech101resClassTime = [CalTech101resClassTime;timeClass];
 end
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
-save(strcat('CalTech101',kernel))
+save(strcat('CalTech101',kernel,'_p=1'))
 toc
 %% SCENE15
 tic
@@ -240,5 +240,5 @@ for j = 1:10
     scene15resClassTime = [scene15resClassTime;timeClass];
 end
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
-save(strcat('scene15',kernel))
+save(strcat('scene15',kernel,'_p=1'))
 toc
