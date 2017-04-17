@@ -1,10 +1,10 @@
 clear all
 
 kernel = 'poly';
-kernelparam = 2;
+kernelparam = 1;
 
 %cd /Users/erikrosvall/github/KEX/K-ELM/
-addpath('C:\Users\Viktor Karlsson\Dropbox\KTH\År 3\Period 4\Kex\Datasets');
+%addpath('C:\Users\Viktor Karlsson\Dropbox\KTH\År 3\Period 4\Kex\Datasets');
 %% MNIST
 tic
 disp('mnist')
@@ -12,13 +12,13 @@ load MNISTData.mat
 MNISTacc = [];
 MNISTtimeTrain = [];
 MNISTtimeClass = [];
-datasize = 5000:5000:30000;
+datasize = 5000:5000:5000;
 for i = datasize
     X = imagesTrain(:,1:i);
     L = labelsTrain(1:i,1)'+1;
 
     hiddenNodes = size(X,1)*2;
-    lambda = 1e4;
+    lambda = 1e2;
     
     t = cputime();
     [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam);
@@ -36,6 +36,7 @@ end
 
 clear imagesTrain imagesTest labelsTest labelsTrain sigma testL wi wo X L t
 save(strcat('MNIST',kernel,'_p=1'));
+clear MNISTacc MNISTtimeClass MNISTtimeTrain datasize hiddenNodes i lambda
 toc
 %% RANDOM FACES AR
 tic
@@ -85,6 +86,7 @@ end
 
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
 save(strcat('AR',kernel,'_p=1'))
+clear ARresAcc ARresTrainTime ARresClassTime timeClass testL t N lambda j i hiddenNodes datasize class
 toc
 %% YALEFACES EXTENDED
 tic
@@ -93,7 +95,7 @@ load randomfaces4extendedyaleb.mat
 
 
 N = size(featureMat, 2);
-datasize = 0.3:0.05:0.8;
+datasize = 0.3:0.1:0.8;
 % Rearrange all the classes
 rng(420)
 
@@ -115,7 +117,7 @@ for j = 1:100
         L = labelMat(:,1:round(N*i));
 
         hiddenNodes = size(X,1)*2;
-        lambda = 1e21;
+        lambda = 1e8;
 
         t = cputime();
         [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam);
@@ -137,7 +139,7 @@ for j = 1:100
 end
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
 save(strcat('YF',kernel,'_p=1'))
-
+clear YFresAcc YFresTrainTime YFresClassTime class datasize hiddenNodes i j lambda N t testL timeClass
 toc
 %% CALTECH101
 tic
@@ -168,7 +170,7 @@ for j = 1:10
         L = labelMat(:,1:round(N*i));
 
         hiddenNodes = size(X,1)*2;
-        lambda = 1e-2;
+        lambda = 1e-1;
 
         t = cputime();
         [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam);
@@ -188,8 +190,11 @@ for j = 1:10
     CalTech101resTrainTime = [CalTech101resTrainTime;timeTrain];
     CalTech101resClassTime = [CalTech101resClassTime;timeClass];
 end
+
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
 save(strcat('CalTech101',kernel,'_p=1'))
+clear CalTech101resAcc CalTech101resClassTime CalTech101resTrainTime class datasize hiddenNodes i j lambda N t testL timeClass
+
 toc
 %% SCENE15
 tic
@@ -239,6 +244,8 @@ for j = 1:10
     scene15resTrainTime = [scene15resTrainTime;timeTrain];
     scene15resClassTime = [scene15resClassTime;timeClass];
 end
+
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
 save(strcat('scene15',kernel))
+clear class datasize hiddenNodes i j lambda N scene15resAcc scene15resClassTime scene15resTrainTime t testL timeClass
 toc
