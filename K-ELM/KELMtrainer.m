@@ -32,7 +32,9 @@ function [ inputWeights, outputWeights, sigma] = KELMtrainer(features, labels, h
     end
     
     if nargin == 7
-        disp('Biggest value of K^T * K', num2str(max(max(K'*K))));
+        disp(strcat('Biggest value of K^T * K: ', num2str(max(max(K'*K)))));
+        disp(strcat('Smallest value of K^T * K: ', num2str(min(min(K'*K)))));
+
     end
     
     outputWeights = (Y/(K'*K+lambda*eye(N)))*K';      % Output matrix minimizing SSE-cost function 

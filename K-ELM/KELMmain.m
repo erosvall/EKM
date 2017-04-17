@@ -115,7 +115,7 @@ for j = 1:1
         lambda = 1e21;
 
         t = cputime();
-        [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam,'Erik är bäst');
+        [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam,'');
         timeTrain = [timeTrain, cputime - t];
 
         %l = KELMclassifier(X,sigma,wi,wo,kernel,1);
