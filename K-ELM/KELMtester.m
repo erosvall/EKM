@@ -2,13 +2,13 @@
 clear all
 load MNISTData.mat
 
-datasize = 10000;  
+datasize = 5000;  
 
 X = imagesTrain(:,1:datasize);
 L = labelsTrain(1:datasize,1)'+1;
 
-hiddenNodes = size(X,1)*1;
-lambda = 1;
+hiddenNodes = size(X,1)*2;
+lambda = 10;
 
 kernel = 'poly';
 kernelparam = 2;
