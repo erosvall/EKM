@@ -100,7 +100,7 @@ YFresTrainTime = [];
 YFresClassTime = [];
 
 
-for j = 1:10
+for j = 1:1
     a = randperm(N);
     featureMat = featureMat(:,a);
     labelMat = labelMat(:,a);    
