@@ -30,6 +30,7 @@ function [ inputWeights, outputWeights, sigma] = KELMtrainer(features, labels, h
         case 'rbf'
             K = radKerl(sigma,sigma,varargin{1});
     end
+    
     if nargin == 7
         disp('Biggest value of K^T * K', num2str(max(max(K'*K))));
     end
