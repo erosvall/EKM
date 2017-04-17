@@ -1,6 +1,8 @@
 clear all
 
 kernel = 'poly';
+kernelparam = 2;
+
 cd /Users/erikrosvall/github/KEX/K-ELM/
 %% MNIST
 
@@ -13,16 +15,16 @@ for datasize = 5000:5000:5000
     L = labelsTrain(1:datasize,1)'+1;
 
     hiddenNodes = size(X,1)*2;
-    lambda = 1;
+    lambda = 10;
     
     t = cputime();
-    [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,2);
+    [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam);
     MNISTtimeTrain = [MNISTtimeTrain, cputime - t];
     
     %l = KELMclassifier(X,sigma,wi,wo,kernel,1);
     %trainAccuracy = nnz(l == L)/size(l,2)
     t = cputime();
-    testL = KELMclassifier(imagesTest,sigma,wi,wo,kernel,1);
+    testL = KELMclassifier(imagesTest,sigma,wi,wo,kernel,kernelparam);
     MNISTtimeClass  = [MNISTtimeClass, cputime - t];
     
     
