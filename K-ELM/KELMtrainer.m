@@ -12,9 +12,13 @@ function [ inputWeights, outputWeights, sigma] = KELMtrainer(features, labels, h
     inputWeights = normc(2*rand(hiddenNodes,d)-1); 
         
     % --- Calculations ---
-    Y = zeros(c,N);                     % One-hot representation
-    for i = 1:N
-        Y(labels(1,i),i) = 1;
+    if size(labels,1) == 1
+        Y = zeros(c,N);                     % One-hot representation
+        for i = 1:N
+            Y(labels(1,i),i) = 1;
+        end
+    else
+        Y = labels;
     end
     
     sigma = max(0,inputWeights*features);      % RLU activation 
