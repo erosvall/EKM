@@ -1,4 +1,4 @@
-function [ inputWeights, outputWeights ] = ELMtrain( features, labels, hiddenNodes)
+function [ inputWeights, outputWeights ] = ELMtrain( features, labels, hiddenNodes,lambda)
     % Labels must be numbered 1,...,c
     % --- Internal representation ---
     X = features;           
@@ -13,13 +13,18 @@ function [ inputWeights, outputWeights ] = ELMtrain( features, labels, hiddenNod
     rng(1337)                           % RNG seed for repetability
     inputWeights = normc(2*rand(h,d)-1); 
     
-    Y = zeros(c,N);                     % One-hot representation
-    for i = 1:N
-        Y(L(1,i),i) = 1;
+    if size(labels,1)==1
+        Y = zeros(c,N);                     % One-hot representation
+        for i = 1:N
+            Y(L(1,i),i) = 1;
+        end
     end
-  
+    if size(labels,1) > 1
+        Y = labels;
+    end
+    
     % --- Calculations ---
-    sigma = max(o,inputWeights*X);      % RLU on hidden neuron input
-    outputWeights = Y*pinv(sigma);      % Output matrix minimizing SSE-cost function 
+    sigma = max(o,inputWeights*X);      % RLU on hidden neuron input    
+    outputWeights = (Y/(sigma'*sigma+lambda*eye(N)))*sigma';      % Output matrix minimizing SSE-cost function 
 end
 
