@@ -24,7 +24,7 @@ function [ inputWeights, outputWeights ] = ELMtrain( features, labels, hiddenNod
     end
     
     % --- Calculations ---
-    sigma = max(o,inputWeights*X);      % RLU on hidden neuron input    
+    sigma = max(0,inputWeights*X);      % RLU on hidden neuron input    
     outputWeights = (Y/(sigma'*sigma+lambda*eye(N)))*sigma';      % Output matrix minimizing SSE-cost function 
 end
 
