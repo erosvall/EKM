@@ -1,33 +1,29 @@
 clear all
 
-kernel = 'poly';
-kernelparam = 1;
-
-%cd /Users/erikrosvall/github/KEX/K-ELM/
-%addpath('C:\Users\Viktor Karlsson\Dropbox\KTH\År 3\Period 4\Kex\Datasets');
+%cd /Users/erikrosvall/github/KEX/ELM/
+%addpath('~/Dropbox/Kex/Datasets/Data från Ayman');
 %% MNIST
-tic
-disp('mnist')
+
 load MNISTData.mat
 MNISTacc = [];
 MNISTtimeTrain = [];
 MNISTtimeClass = [];
-datasize = 5000:5000:5000;
+datasize = 5000:5000:30000;
 for i = datasize
     X = imagesTrain(:,1:i);
     L = labelsTrain(1:i,1)'+1;
 
     hiddenNodes = size(X,1)*2;
-    lambda = 1e2;
+    lambda = 1;
     
     t = cputime();
-    [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam);
+    [wi, wo] = ELMtrain(X,L,hiddenNodes,lambda);
     MNISTtimeTrain = [MNISTtimeTrain, cputime - t];
     
     %l = KELMclassifier(X,sigma,wi,wo,kernel,1);
     %trainAccuracy = nnz(l == L)/size(l,2)
     t = cputime();
-    testL = KELMclassifier(imagesTest,sigma,wi,wo,kernel,kernelparam);
+    testL = ELMclassifier(imagesTest,wi,wo);
     MNISTtimeClass  = [MNISTtimeClass, cputime - t];
     
     
@@ -35,12 +31,10 @@ for i = datasize
 end
 
 clear imagesTrain imagesTest labelsTest labelsTrain sigma testL wi wo X L t
-save(strcat('MNIST',kernel,'_p=1'));
-clear MNISTacc MNISTtimeClass MNISTtimeTrain datasize hiddenNodes i lambda
-toc
+save('MNIST_ELM_with_penalty');
+clear all
 %% RANDOM FACES AR
-tic
-disp('AR')
+
 load randomfaces4AR.mat
 
 datasize = 0.3:0.05:0.8;
@@ -50,7 +44,7 @@ N = size(featureMat, 2);
 ARresAcc = [];
 ARresTrainTime = [];
 ARresClassTime = [];
-for j = 1:100
+for j = 1:700
     a = randperm(N);
     featureMat = featureMat(:,a);
     labelMat = labelMat(:,a);   
@@ -63,16 +57,16 @@ for j = 1:100
         L = labelMat(:,1:round(N*i));
 
         hiddenNodes = size(X,1)*2;
-        lambda = 1e21;
+        lambda = 0.5e5;
 
         t = cputime();
-        [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam);
+        [wi, wo] = ELMtrain(X,L,hiddenNodes,lambda);
         timeTrain = [timeTrain, cputime - t];
 
         %l = KELMclassifier(X,sigma,wi,wo,kernel,1);
         %trainAccuracy = nnz(l == L)/size(l,2)
         t = cputime();
-        testL = KELMclassifier(featureMat(:,round(N*i) + 1:end),sigma,wi,wo,kernel,kernelparam);
+        testL = ELMclassifier(featureMat(:,round(N*i) + 1:end),wi,wo);
         timeClass  = [timeClass, cputime - t];
 
         [~,class] = max(labelMat(:,round(N*i) + 1:end));
@@ -85,17 +79,16 @@ for j = 1:100
 end
 
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
-save(strcat('AR',kernel,'_p=1'))
-clear ARresAcc ARresTrainTime ARresClassTime timeClass testL t N lambda j i hiddenNodes datasize class
-toc
+save('AR_ELM_with_penalty')
+clear all
+
 %% YALEFACES EXTENDED
-tic
-disp('yalefaces')
+
 load randomfaces4extendedyaleb.mat
 
 
 N = size(featureMat, 2);
-datasize = 0.3:0.1:0.8;
+datasize = 0.3:0.05:0.8;
 % Rearrange all the classes
 rng(420)
 
@@ -105,7 +98,7 @@ YFresTrainTime = [];
 YFresClassTime = [];
 
 
-for j = 1:100
+for j = 1:700
     a = randperm(N);
     featureMat = featureMat(:,a);
     labelMat = labelMat(:,a);    
@@ -117,16 +110,16 @@ for j = 1:100
         L = labelMat(:,1:round(N*i));
 
         hiddenNodes = size(X,1)*2;
-        lambda = 1e8;
+        lambda = 0.5e5;
 
         t = cputime();
-        [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam);
+        [wi, wo] = ELMtrain(X,L,hiddenNodes,lambda);
         timeTrain = [timeTrain, cputime - t];
 
         %l = KELMclassifier(X,sigma,wi,wo,kernel,1);
         %trainAccuracy = nnz(l == L)/size(l,2)
         t = cputime();
-        testL = KELMclassifier(featureMat(:,round(N*i) + 1:end),sigma,wi,wo,kernel,kernelparam);
+        testL = ELMclassifier(featureMat(:,round(N*i) + 1:end),wi,wo);
         timeClass  = [timeClass, cputime - t];
 
         [~,class] = max(labelMat(:,round(N*i) + 1:end));
@@ -138,12 +131,10 @@ for j = 1:100
     YFresClassTime = [YFresClassTime;timeClass];
 end
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
-save(strcat('YF',kernel,'_p=1'))
-clear YFresAcc YFresTrainTime YFresClassTime class datasize hiddenNodes i j lambda N t testL timeClass
-toc
+save('YF_ELM_with_penalty')
+clear all
+
 %% CALTECH101
-tic
-disp('caltech')
 load spatialpyramidfeatures4caltech101.mat
 
 
@@ -158,7 +149,7 @@ CalTech101resTrainTime = [];
 CalTech101resClassTime = [];
 
 
-for j = 1:10
+for j = 1:120
     a = randperm(N);
     featureMat = featureMat(:,a);
     labelMat = labelMat(:,a);    
@@ -170,16 +161,16 @@ for j = 1:10
         L = labelMat(:,1:round(N*i));
 
         hiddenNodes = size(X,1)*2;
-        lambda = 1e-1;
+        lambda = 0.1;
 
         t = cputime();
-        [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam);
+        [wi, wo] = ELMtrain(X,L,hiddenNodes,lambda);
         timeTrain = [timeTrain, cputime - t];
 
         %l = KELMclassifier(X,sigma,wi,wo,kernel,1);
         %trainAccuracy = nnz(l == L)/size(l,2)
         t = cputime();
-        testL = KELMclassifier(featureMat(:,round(N*i) + 1:end),sigma,wi,wo,kernel,kernelparam);
+        testL = ELMclassifier(featureMat(:,round(N*i) + 1:end),wi,wo);
         timeClass  = [timeClass, cputime - t];
 
         [~,class] = max(labelMat(:,round(N*i) + 1:end));
@@ -190,19 +181,14 @@ for j = 1:10
     CalTech101resTrainTime = [CalTech101resTrainTime;timeTrain];
     CalTech101resClassTime = [CalTech101resClassTime;timeClass];
 end
-
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
-save(strcat('CalTech101',kernel,'_p=1'))
-clear CalTech101resAcc CalTech101resClassTime CalTech101resTrainTime class datasize hiddenNodes i j lambda N t testL timeClass
-
-toc
+save('CalTech101_ELM_with_penalty')
+clear all
 %% SCENE15
-tic
 load spatialpyramidfeatures4scene15.mat
-disp('scene15')
+
 
 N = size(featureMat, 2);
-
 datasize = 0.3:0.05:0.8;
 % Rearrange all the classes
 rng(420)
@@ -213,7 +199,7 @@ scene15resTrainTime = [];
 scene15resClassTime = [];
 
 
-for j = 1:10
+for j = 1:100
     a = randperm(N);
     featureMat = featureMat(:,a);
     labelMat = labelMat(:,a);    
@@ -225,16 +211,16 @@ for j = 1:10
         L = labelMat(:,1:round(N*i));
 
         hiddenNodes = size(X,1)*2;
-        lambda = 1e-7;
+        lambda = 1e-4;
 
         t = cputime();
-        [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam);
+        [wi, wo] = ELMtrain(X,L,hiddenNodes,lambda);
         timeTrain = [timeTrain, cputime - t];
 
         %l = KELMclassifier(X,sigma,wi,wo,kernel,1);
         %trainAccuracy = nnz(l == L)/size(l,2)
         t = cputime();
-        testL = KELMclassifier(featureMat(:,round(N*i) + 1:end),sigma,wi,wo,kernel,kernelparam);
+        testL = ELMclassifier(featureMat(:,round(N*i) + 1:end),wi,wo);
         timeClass  = [timeClass, cputime - t];
 
         [~,class] = max(labelMat(:,round(N*i) + 1:end));
@@ -245,8 +231,6 @@ for j = 1:10
     scene15resTrainTime = [scene15resTrainTime;timeTrain];
     scene15resClassTime = [scene15resClassTime;timeClass];
 end
-
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
-save(strcat('scene15',kernel))
-clear class datasize hiddenNodes i j lambda N scene15resAcc scene15resClassTime scene15resTrainTime t testL timeClass
-toc
+save('scene15_ELM_with_penalty')
+clear all
