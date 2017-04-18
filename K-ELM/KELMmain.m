@@ -191,7 +191,7 @@ load spatialpyramidfeatures4scene15.mat
 
 
 N = size(featureMat, 2);
-datasize = 0.7;
+datasize = 0.4:0.1:0.8;
 % Rearrange all the classes
 rng(420)
 
@@ -213,7 +213,7 @@ for j = 1:1
         L = labelMat(:,1:round(N*i));
 
         hiddenNodes = size(X,1)*2;
-        lambda = 1e-8;
+        lambda = 1e-7;
 
         t = cputime();
         [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam,'Erik är bäst');
