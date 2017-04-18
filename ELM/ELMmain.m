@@ -139,7 +139,7 @@ load spatialpyramidfeatures4caltech101.mat
 
 
 N = size(featureMat, 2);
-datasize = 0.7:0.1:0.8;
+datasize = 0.3:0.05:0.8;
 % Rearrange all the classes
 rng(420)
 
@@ -149,7 +149,7 @@ CalTech101resTrainTime = [];
 CalTech101resClassTime = [];
 
 
-for j = 1:2
+for j = 1:120
     a = randperm(N);
     featureMat = featureMat(:,a);
     labelMat = labelMat(:,a);    
@@ -161,7 +161,7 @@ for j = 1:2
         L = labelMat(:,1:round(N*i));
 
         hiddenNodes = size(X,1)*2;
-        lambda = 0.01;
+        lambda = 0.1;
 
         t = cputime();
         [wi, wo] = ELMtrain(X,L,hiddenNodes,lambda);
@@ -183,13 +183,13 @@ for j = 1:2
 end
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
 save('CalTech101_ELM_with_penalty')
-
+clear all
 %% SCENE15
 load spatialpyramidfeatures4scene15.mat
 
 
 N = size(featureMat, 2);
-datasize = 0.1:0.1:0.1;
+datasize = 0.3:0.05:0.8;
 % Rearrange all the classes
 rng(420)
 
@@ -199,7 +199,7 @@ scene15resTrainTime = [];
 scene15resClassTime = [];
 
 
-for j = 1:1
+for j = 1:100
     a = randperm(N);
     featureMat = featureMat(:,a);
     labelMat = labelMat(:,a);    
@@ -211,7 +211,7 @@ for j = 1:1
         L = labelMat(:,1:round(N*i));
 
         hiddenNodes = size(X,1)*2;
-        lambda = 1e-8;
+        lambda = 1e-4;
 
         t = cputime();
         [wi, wo] = ELMtrain(X,L,hiddenNodes,lambda);
@@ -233,3 +233,4 @@ for j = 1:1
 end
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
 save('scene15_ELM_with_penalty')
+clear all
