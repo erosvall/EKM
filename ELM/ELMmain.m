@@ -1,20 +1,20 @@
 clear all
 
-cd /Users/erikrosvall/github/KEX/ELM/
-addpath('~/Dropbox/Kex/Datasets/Data från Ayman');
+%cd /Users/erikrosvall/github/KEX/ELM/
+%addpath('~/Dropbox/Kex/Datasets/Data från Ayman');
 %% MNIST
 
 load MNISTData.mat
 MNISTacc = [];
 MNISTtimeTrain = [];
 MNISTtimeClass = [];
-datasize = 10000:5000:10000;
+datasize = 5000:5000:30000;
 for i = datasize
     X = imagesTrain(:,1:i);
     L = labelsTrain(1:i,1)'+1;
 
     hiddenNodes = size(X,1)*2;
-    lambda = 10;
+    lambda = 1;
     
     t = cputime();
     [wi, wo] = ELMtrain(X,L,hiddenNodes,lambda);
@@ -32,19 +32,19 @@ end
 
 clear imagesTrain imagesTest labelsTest labelsTrain sigma testL wi wo X L t
 save('MNIST_ELM_with_penalty');
-
+clear all
 %% RANDOM FACES AR
 
 load randomfaces4AR.mat
 
-datasize = 0.1:0.1:0.2;
+datasize = 0.3:0.05:0.8;
 % Rearrange all the classes
 rng(420)
 N = size(featureMat, 2);
 ARresAcc = [];
 ARresTrainTime = [];
 ARresClassTime = [];
-for j = 1:2
+for j = 1:700
     a = randperm(N);
     featureMat = featureMat(:,a);
     labelMat = labelMat(:,a);   
@@ -57,7 +57,7 @@ for j = 1:2
         L = labelMat(:,1:round(N*i));
 
         hiddenNodes = size(X,1)*2;
-        lambda = 1e0;
+        lambda = 0.5e5;
 
         t = cputime();
         [wi, wo] = ELMtrain(X,L,hiddenNodes,lambda);
@@ -80,6 +80,7 @@ end
 
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
 save('AR_ELM_with_penalty')
+clear all
 
 %% YALEFACES EXTENDED
 
@@ -87,7 +88,7 @@ load randomfaces4extendedyaleb.mat
 
 
 N = size(featureMat, 2);
-datasize = 0.1:0.1:0.9;
+datasize = 0.3:0.05:0.8;
 % Rearrange all the classes
 rng(420)
 
@@ -97,7 +98,7 @@ YFresTrainTime = [];
 YFresClassTime = [];
 
 
-for j = 1:1
+for j = 1:700
     a = randperm(N);
     featureMat = featureMat(:,a);
     labelMat = labelMat(:,a);    
@@ -109,7 +110,7 @@ for j = 1:1
         L = labelMat(:,1:round(N*i));
 
         hiddenNodes = size(X,1)*2;
-        lambda = 1e1;
+        lambda = 0.5e5;
 
         t = cputime();
         [wi, wo] = ELMtrain(X,L,hiddenNodes,lambda);
@@ -131,7 +132,7 @@ for j = 1:1
 end
 clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
 save('YF_ELM_with_penalty')
-
+clear all
 
 %% CALTECH101
 load spatialpyramidfeatures4caltech101.mat
