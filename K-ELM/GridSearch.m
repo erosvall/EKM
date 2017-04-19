@@ -31,24 +31,30 @@ Y = labelMat(:,1:round(N*0.7));
 Yt = labelMat(:,round(N*0.7) + 1:end);
 
 
-
+saveParams = [];
 %% KELM Grid serach
 kernel = 'rbf';
-lambda = [1e4];
-kernelparam = [0.0001];
+lambda = 1e-6*[0.5:0.5:5];
+kernelparam = 1e3*[0.5:0.5:5];
+h = size(X,1)*2;
+
 Accuracy = [];
 params = [];
-h = size(X,1)*2;
+
+
 for l = lambda
-    for kp = kernelparam
+    for kp = kernelparam        
+        tic
+        %Computing accuracy
         Accuracy = [Accuracy; l kp KELMClassificationAccuracy(X,Y,Xt,Yt,l,h,kernel,kp)];
         params = [params;l kp];
+        
     end
 end
 [maxAccuracy,maxIndex] = max(Accuracy(:,3));
 maxAccuracy
-params(maxIndex,:)
+topParams = params(maxIndex,:);
 
-
+saveParams = [saveParams; maxAccuracy topParams];
 
 

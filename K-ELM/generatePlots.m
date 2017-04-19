@@ -2,19 +2,19 @@
 close all
 clear all
 
-dataset = 'AR';                  % for graph titles
+dataset = 'MNIST';                  % for graph titles
 
-kelmfile = strcat(dataset,'poly');             % kelm-data
+kelmfile = strcat(dataset,'rbf3');             % kelm-data
 elmfile = strcat(dataset,'_ELM_with_penalty'); % elm-data
 
 load(kelmfile);
 
 % For MNIST, toggle comments below ----------
-acc = mean(acc) ;                      % commented for MNIST
-time = mean(classTime + trainTime);    % commented for MNIST
-%time = classTime + trainTime;           % activated for MNIST
-
+%acc = mean(acc) ;                      % commented for MNIST
+%time = mean(classTime + trainTime);    % commented for MNIST
+time = classTime + trainTime;           % activated for MNIST
 %-------------------------
+
 figure(1)
 plot(datasize,acc);
 
@@ -29,17 +29,16 @@ plot(acc,time);
 load(elmfile);
 
 % For MNIST, toggle comments below ----------
-acc = mean(acc) ;                      % commented for MNIST
-time = mean(classTime + trainTime);    % commented for MNIST
-%time = classTime + trainTime;           % activated for MNIST
-
+%acc = mean(acc) ;                      % commented for MNIST
+%time = mean(classTime + trainTime);    % commented for MNIST
+time = classTime + trainTime;           % activated for MNIST
 %-------------------------
 
 figure(1)
 hold on
 plot(datasize,acc);
 xlabel('fraction of total database used for training');
-ylabel('accuracy [%]');
+ylabel('accuracy');
 title(strcat('Results on',' ',dataset));
 legend(strcat('KELM',kernel,num2str(kernelparam)),'ELM','location','best')
 
@@ -55,7 +54,7 @@ figure(3)
 hold on
 plot(acc,time);
 ylabel('time[s]');
-xlabel('accuracy [%]');
+xlabel('accuracy');
 title(strcat('Results on ',dataset));
 legend(strcat('KELM',kernel,num2str(kernelparam)),'ELM','location','best')
 
@@ -63,6 +62,5 @@ movegui(1,'northwest')
 movegui(2,'north')
 movegui(3,'northeast')
 
-%% save figures
-print()
+
 

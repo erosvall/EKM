@@ -4,9 +4,9 @@ cd '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Saved Data/'
 %addpath('C:\Users\Viktor Karlsson\Dropbox\KTH\År 3\Period 4\Kex\Datasets');
 %% MNIST
 kernel = 'rbf';
-kernelparam = 1;
+kernelparam = 3;
 datasize = [5000:5000:5000];
-lambda= 10;
+lambda= 1;
 % --------------------------
 tic
 disp('mnist')
@@ -42,13 +42,13 @@ classTime = classificationTime;
 clear  accuracy d classificationTime tempTrainTime imagesTrain imagesTest labelsTest labelsTrain sigma testL wi wo X L t
 
 save(strcat('MNIST',kernel,num2str(kernelparam)));
-clear all
+%clear all
 toc
 %% RANDOM FACES AR
 kernel = 'rbf';
-kernelparam = [1];
-datasize = [0.3:0.05:0.8];
-lambda = [1e0];
+kernelparam = [0.1];
+datasize = 0.5%[0.3:0.05:0.8];
+lambda = [1];
 iterations = 2;
 %--------------------------
 

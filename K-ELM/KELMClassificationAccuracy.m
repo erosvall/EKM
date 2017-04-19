@@ -3,7 +3,9 @@ function [Accuracy] = KELMClassificationAccuracy(TrainFeatures,TrainLabels,TestF
 
     [wi, wo, sigma] = KELMtrainer(TrainFeatures,TrainLabels,hiddenNodes,lambda,kernel,kernelparam);    
     labelGuess = KELMclassifier(TestFeatures,sigma,wi,wo,kernel,kernelparam);
-    labelGuess(1:10)
-    TestLabels(1:10)
+    if size(TestLabels,1) > 1
+        [~,TestLabels] = max(TestLabels);
+    end
+    
     Accuracy = nnz(labelGuess == TestLabels)/size(labelGuess,2);
 end
