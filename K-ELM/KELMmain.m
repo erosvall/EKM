@@ -46,9 +46,9 @@ save(strcat('MNIST',kernel,num2str(kernelparam)));
 toc
 %% RANDOM FACES AR
 kernel = 'rbf';
-kernelparam = [0.1];
-datasize = 0.5%[0.3:0.05:0.8];
-lambda = [1];
+kernelparam = [2000];
+datasize = [0.3:0.05:0.8];
+lambda = [1e-6];
 iterations = 2;
 %--------------------------
 
