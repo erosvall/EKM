@@ -1,5 +1,5 @@
 clear all
-cd /Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Saved Data/
+cd '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Saved Data/'
 %cd /Users/erikrosvall/github/KEX/K-ELM/
 %addpath('C:\Users\Viktor Karlsson\Dropbox\KTH\År 3\Period 4\Kex\Datasets');
 %% MNIST
@@ -138,7 +138,7 @@ for j = 1:iterations
         L = labelMat(:,1:round(N*i));
 
         hiddenNodes = size(X,1)*2;
-        lambda = 1e8;
+        
 
         t = cputime();
         [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam);
@@ -170,7 +170,7 @@ toc
 %% CALTECH101
 kernel = 'rbf';
 kernelparam = 1;
-lambda = 1e8;
+lambda = 1e-1;
 datasize = 0.3:0.1:0.8;
 iterations = 2;
 % ----------------
@@ -199,7 +199,7 @@ for j = 1:iterations
         L = labelMat(:,1:round(N*i));
 
         hiddenNodes = size(X,1)*2;
-        lambda = 1e-1;
+       
 
         t = cputime();
         [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam);
