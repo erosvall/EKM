@@ -1,26 +1,19 @@
 clear all
-
-kernel = 'rbf';
-kernelparam = 1;
-
+cd /Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Saved Data/
 %cd /Users/erikrosvall/github/KEX/K-ELM/
 %addpath('C:\Users\Viktor Karlsson\Dropbox\KTH\År 3\Period 4\Kex\Datasets');
 %% MNIST
 kernel = 'rbf';
-
+kernelparam = 1;
+datasize = [5000:5000:5000];
+lambda= 10;
+% --------------------------
 tic
 disp('mnist')
 load MNISTData.mat
-
 accuracy = [];
 trainTime = [];
 classificationTime = [];
-
-% --------------------------
-datasize = [5000:5000:5000];
-kernelparam = 1;
-lambda= 10;
-% --------------------------
 for d = datasize
     
     X = imagesTrain(:,1:d);
@@ -47,13 +40,14 @@ acc = accuracy;
 classTime = classificationTime;
 
 clear  accuracy d classificationTime tempTrainTime imagesTrain imagesTest labelsTest labelsTrain sigma testL wi wo X L t
+
 save(strcat('MNIST',kernel,num2str(kernelparam)));
 clear all
 toc
 %% RANDOM FACES AR
 kernel = 'rbf';
-datasize = [0.3:0.05:0.8];
 kernelparam = [1];
+datasize = [0.3:0.05:0.8];
 lambda = [1e0];
 iterations = 2;
 %--------------------------
@@ -62,13 +56,11 @@ rng(420)
 tic
 disp('AR')
 load randomfaces4AR.mat
-
 acc = [];
 trainTime = [];
 classTime = [];
 
 N = size(featureMat,2);
-
 for j = 1:iterations
     % suffle data
     a = randperm(N);
@@ -109,6 +101,7 @@ end
 acc = mean(acc)
 trainTime = mean(trainTime);
 classTime = mean(classTime);
+
 clear tempAcc tempClassTime tempTrainTime featureMat filenameMat labelMat a timeTrain timeTrain wi wo sigma X L class d iteration j N t testL
 save(strcat('AR',kernel,num2str(kernelparam)))
 clear all
@@ -119,7 +112,7 @@ kernelparam = 1;
 lambda = 1e8;
 datasize = 0.3:0.1:0.8;
 iterations = 2;
-
+% ------------------------
 tic
 disp('yalefaces')
 load randomfaces4extendedyaleb.mat
@@ -283,6 +276,7 @@ for j = 1:iterations
     scene15resTrainTime = [scene15resTrainTime;timeTrain];
     scene15resClassTime = [scene15resClassTime;timeClass];
 end
+
 acc = mean(scene15resAcc);
 trainTime = mean(scene15resTrainTime);
 classTime = mean(scene15resClassTime);
@@ -291,3 +285,6 @@ clear featureMat filenameMat scene15resClassTime scene15resTrainTime timeClass s
 save(strcat('scene15',kernel,num2str(kernelparam)))
 clear all
 toc
+
+
+
