@@ -3,7 +3,7 @@ clear all
 kernel = 'poly';
 kernelparam = 1;
 
-%cd /Users/erikrosvall/github/KEX/K-ELM/
+cd /Users/erikrosvall/github/KEX/K-ELM/
 %addpath('C:\Users\Viktor Karlsson\Dropbox\KTH\År 3\Period 4\Kex\Datasets');
 %% MNIST
 tic
