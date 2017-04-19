@@ -1,83 +1,113 @@
 clear all
 
-kernel = 'poly';
+kernel = 'rbf';
 kernelparam = 1;
 
 %cd /Users/erikrosvall/github/KEX/K-ELM/
 %addpath('C:\Users\Viktor Karlsson\Dropbox\KTH\År 3\Period 4\Kex\Datasets');
 %% MNIST
+kernel = 'rbf';
+
 tic
 disp('mnist')
 load MNISTData.mat
-MNISTacc = [];
-MNISTtimeTrain = [];
-MNISTtimeClass = [];
-datasize = 5000:5000:5000;
-for i = datasize
-    X = imagesTrain(:,1:i);
-    L = labelsTrain(1:i,1)'+1;
 
+accuracy = [];
+trainTime = [];
+classificationTime = [];
+gridSearchSave=[];
+% --------------------------
+datasize = [5000:5000:5000];
+kernelparam = [1:2];
+lambda = [1e0,1e1];
+% --------------------------
+for d = datasize
+    
+    X = imagesTrain(:,1:d);
+    L = labelsTrain(1:d,1)'+1;
     hiddenNodes = size(X,1)*2;
-    lambda = 1e2;
     
-    t = cputime();
-    [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam);
-    MNISTtimeTrain = [MNISTtimeTrain, cputime - t];
-    
-    %l = KELMclassifier(X,sigma,wi,wo,kernel,1);
-    %trainAccuracy = nnz(l == L)/size(l,2)
-    t = cputime();
-    testL = KELMclassifier(imagesTest,sigma,wi,wo,kernel,kernelparam);
-    MNISTtimeClass  = [MNISTtimeClass, cputime - t];
-    
-    
-    MNISTacc = [MNISTacc, nnz(testL == labelsTest'+1)/size(testL,2)];    
+    for l = lambda    
+        for kp = kernelparam
+            % Train model
+            t = cputime();
+            [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,l,kernel,kp);
+            tempTrainTime = cputime - t;
+            trainTime = [trainTime, tempTrainTime];
+
+            
+            % Test model
+            t = cputime();
+            testL = KELMclassifier(imagesTest,sigma,wi,wo,kernel,kp);
+            tempClassificationTime = cputime - t;
+            classificationTime  = [classificationTime, tempClassificationTime];
+            
+            tempAccuracy = nnz(testL == labelsTest'+1)/size(testL,2);
+            accuracy = [accuracy, tempAccuracy];
+            
+            gridSearchSave = [gridSearchSave; d l kp tempAccuracy tempTrainTime tempClassificationTime];
+        end        
+    end
 end
 
+[maxAccuracy,maxIndex] = max(gridSearchSave(:,4));
+
 clear imagesTrain imagesTest labelsTest labelsTrain sigma testL wi wo X L t
-save(strcat('MNIST',kernel,'_p=1'));
-clear MNISTacc MNISTtimeClass MNISTtimeTrain datasize hiddenNodes i lambda
+save(strcat('MNIST',kernel,num2str(kernelparam)));
+
+%clear all
 toc
 %% RANDOM FACES AR
+kernel = 'rbf';
+rng(420)
+
 tic
 disp('AR')
 load randomfaces4AR.mat
 
-datasize = 0.3:0.05:0.8;
-% Rearrange all the classes
-rng(420)
-N = size(featureMat, 2);
-ARresAcc = [];
-ARresTrainTime = [];
-ARresClassTime = [];
-for j = 1:100
-    a = randperm(N);
+accuracy = [];
+trainTime = [];
+classificationTime = [];
+gridSearchSave=[];
+%--------------------------
+datasize = [0.3:0.05:0.8];
+kernelparam = [1:2];
+lambda = [1e0,1e1];
+iterations = 100;
+%--------------------------
+for j = 1:iterations
+    a = randperm(size(featureMat, 2));
     featureMat = featureMat(:,a);
     labelMat = labelMat(:,a);   
     
-    acc = [];
-    timeTrain = [];
-    timeClass = [];
-    for i = datasize
-        X = featureMat(:,1:round(N*i));
-        L = labelMat(:,1:round(N*i));
+    tempAcc = [];
+    tempTrainTime = [];
+    tempClassificationTime = [];
+    for d = datasize
+        for l = lambda
+            for kp = kernelparam
+                X = featureMat(:,1:round(N*d));
+                L = labelMat(:,1:round(N*d));
 
-        hiddenNodes = size(X,1)*2;
-        lambda = 1e21;
+                hiddenNodes = size(X,1)*2;
+                lambda = 1e21;
 
-        t = cputime();
-        [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,lambda,kernel,kernelparam);
-        timeTrain = [timeTrain, cputime - t];
+                t = cputime();
+                [wi, wo, sigma] = KELMtrainer(X,L,hiddenNodes,l,kernel,kp);
+                tempTime
+                timeTrain = [timeTrain, cputime - t];
 
-        %l = KELMclassifier(X,sigma,wi,wo,kernel,1);
-        %trainAccuracy = nnz(l == L)/size(l,2)
-        t = cputime();
-        testL = KELMclassifier(featureMat(:,round(N*i) + 1:end),sigma,wi,wo,kernel,kernelparam);
-        timeClass  = [timeClass, cputime - t];
+                %l = KELMclassifier(X,sigma,wi,wo,kernel,1);
+                %trainAccuracy = nnz(l == L)/size(l,2)
+                t = cputime();
+                testL = KELMclassifier(featureMat(:,round(N*d) + 1:end),sigma,wi,wo,kernel,kp);
+                timeClass  = [timeClass, cputime - t];
 
-        [~,class] = max(labelMat(:,round(N*i) + 1:end));
+                [~,class] = max(labelMat(:,round(N*d) + 1:end));
 
-        acc = [acc, nnz(testL == class)/size(testL,2)];    
+                acc = [acc, nnz(testL == class)/size(testL,2)];    
+            end
+        end                
     end
     ARresAcc = [ARresAcc; acc];
     ARresTrainTime = [ARresTrainTime; timeTrain];

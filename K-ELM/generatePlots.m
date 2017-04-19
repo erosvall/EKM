@@ -1,37 +1,68 @@
-%% MNIST
-clear all
+%% KELM plot
 close all
-load('MNISTpoly.mat');
-acc = MNISTacc ;
-datasize;
-time = MNISTtimeClass + MNISTtimeTrain; 
+clear all
 
+dataset = 'AR';                  % for graph titles
 
-figure
+kelmfile = strcat(dataset,'poly');             % kelm-data
+elmfile = strcat(dataset,'_ELM_with_penalty'); % elm-data
+
+load(kelmfile);
+
+% For MNIST, toggle comments below ----------
+acc = mean(acc) ;                      % commented for MNIST
+time = mean(classTime + trainTime);    % commented for MNIST
+%time = classTime + trainTime;           % activated for MNIST
+
+%-------------------------
+figure(1)
 plot(datasize,acc);
-figure
+
+figure(2)
 plot(datasize,time);
-figure
+
+figure(3)
 plot(acc,time);
 
-%% AR
-clear all
-close all
-load('ARpoly.mat');
+% ELM plot
 
-acc = mean(ARresAcc) ;
-datasize;
-time = mean(ARresClassTime + ARresTrainTime); 
+load(elmfile);
 
-figure
+% For MNIST, toggle comments below ----------
+acc = mean(acc) ;                      % commented for MNIST
+time = mean(classTime + trainTime);    % commented for MNIST
+%time = classTime + trainTime;           % activated for MNIST
+
+%-------------------------
+
+figure(1)
+hold on
 plot(datasize,acc);
 xlabel('fraction of total database used for training');
-ylabel('accuracy');
-figure
+ylabel('accuracy [%]');
+title(strcat('Results on',' ',dataset));
+legend(strcat('KELM',kernel,num2str(kernelparam)),'ELM','location','best')
+
+figure(2)
+hold on
 plot(datasize,time);
 xlabel('fraction of total database used for training');
-ylabel('time');
-figure
+ylabel('time [s]');
+title(strcat('Results on ',dataset));
+legend(strcat('KELM',kernel,num2str(kernelparam)),'ELM','location','best')
+
+figure(3)
+hold on
 plot(acc,time);
-ylabel('time');
-xlabel('accuracy');
+ylabel('time[s]');
+xlabel('accuracy [%]');
+title(strcat('Results on ',dataset));
+legend(strcat('KELM',kernel,num2str(kernelparam)),'ELM','location','best')
+
+movegui(1,'northwest')
+movegui(2,'north')
+movegui(3,'northeast')
+
+%% save figures
+print()
+

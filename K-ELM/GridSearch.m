@@ -1,4 +1,4 @@
-
+clear all
 load('MNISTData.mat')
 datasize = 5000;
 
@@ -10,12 +10,12 @@ Yt = labelsTest'+1;
 
 
 %% För alla andra dataset
-addpath('~/Dropbox/Kex/Datasets/Data från Ayman');
-load('randomfaces4AR')
-% randomfaces4extendedyaleb
-% randomfaces4AR
-% spatialpyramidfeatures4scene15
-% spatialpyramidfeatures4caltech101
+clear all
+%load('randomfaces4AR')
+load('randomfaces4extendedyaleb')
+%load('randomfaces4AR')
+%load('spatialpyramidfeatures4scene15')
+%load('spatialpyramidfeatures4caltech101')
 
 N = size(featureMat,2);
 % Väljer alltid 70% av datasetet.
@@ -34,8 +34,8 @@ Yt = labelMat(:,round(N*0.7) + 1:end);
 
 %% KELM Grid serach
 kernel = 'rbf';
-lambda = [1:2];
-kernelparam = [1:2];
+lambda = [1e4];
+kernelparam = [0.0001];
 Accuracy = [];
 params = [];
 h = size(X,1)*2;
@@ -46,8 +46,8 @@ for l = lambda
     end
 end
 [maxAccuracy,maxIndex] = max(Accuracy(:,3));
-maxAccuracy;
-params(maxIndex,:);
+maxAccuracy
+params(maxIndex,:)
 
 
 
