@@ -1,5 +1,9 @@
 clear all
-cd '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Saved Data/'
+
+kernel = 'poly';
+kernelparam = 1;
+
+%cd '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Saved Data/'
 %cd /Users/erikrosvall/github/KEX/K-ELM/
 %addpath('C:\Users\Viktor Karlsson\Dropbox\KTH\År 3\Period 4\Kex\Datasets');
 %% MNIST
@@ -40,16 +44,15 @@ acc = accuracy;
 classTime = classificationTime;
 
 clear  accuracy d classificationTime tempTrainTime imagesTrain imagesTest labelsTest labelsTrain sigma testL wi wo X L t
-
 save(strcat('MNIST',kernel,num2str(kernelparam)));
 %clear all
 toc
 %% RANDOM FACES AR
 kernel = 'rbf';
-kernelparam = [2000];
-datasize = [0.3:0.05:0.8];
-lambda = [1e-6];
-iterations = 2;
+kernelparam = 2000;
+datasize = 0.3:0.05:0.8;
+lambda = 1e-6;
+iterations = 100;
 %--------------------------
 
 rng(420)

@@ -12,9 +12,8 @@ Yt = labelsTest'+1;
 %% För alla andra dataset
 clear all
 %load('randomfaces4AR')
-load('randomfaces4extendedyaleb')
-%load('randomfaces4AR')
-%load('spatialpyramidfeatures4scene15')
+%load('randomfaces4extendedyaleb')
+load('spatialpyramidfeatures4scene15')
 %load('spatialpyramidfeatures4caltech101')
 
 N = size(featureMat,2);
@@ -34,8 +33,8 @@ Yt = labelMat(:,round(N*0.7) + 1:end);
 saveParams = [];
 %% KELM Grid serach
 kernel = 'rbf';
-lambda = 1e-6*[0.5:0.5:5];
-kernelparam = 1e3*[0.5:0.5:5];
+lambda = 10.^[-9:1:-5];
+kernelparam = 10.^[-2:1:2];
 h = size(X,1)*2;
 
 Accuracy = [];
@@ -48,7 +47,7 @@ for l = lambda
         %Computing accuracy
         Accuracy = [Accuracy; l kp KELMClassificationAccuracy(X,Y,Xt,Yt,l,h,kernel,kp)];
         params = [params;l kp];
-        
+        toc
     end
 end
 [maxAccuracy,maxIndex] = max(Accuracy(:,3));

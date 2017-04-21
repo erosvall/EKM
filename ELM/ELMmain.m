@@ -29,22 +29,25 @@ for i = datasize
     
     MNISTacc = [MNISTacc, nnz(testL == labelsTest'+1)/size(testL,2)];    
 end
+acc = MNISTacc;
+classTime = MNISTtimeClass;
+trainTime = MNISTtimeTrain;
 
-clear imagesTrain imagesTest labelsTest labelsTrain sigma testL wi wo X L t
-save('MNIST_ELM_with_penalty');
+clear imagesTrain imagesTest labelsTest labelsTrain sigma testL i MNISTacc MNISTtimeClass MNISTtimeTrain wi wo X L t
+save('MNIST_ELM');
 clear all
 %% RANDOM FACES AR
 
 load randomfaces4AR.mat
 
-datasize = 0.3:0.05:0.8;
+datasize = 0.5:0.1:0.6%0.3:0.05:0.8;
 % Rearrange all the classes
 rng(420)
 N = size(featureMat, 2);
 ARresAcc = [];
 ARresTrainTime = [];
 ARresClassTime = [];
-for j = 1:700
+for j = 1:2
     a = randperm(N);
     featureMat = featureMat(:,a);
     labelMat = labelMat(:,a);   
@@ -77,9 +80,12 @@ for j = 1:700
     ARresTrainTime = [ARresTrainTime; timeTrain];
     ARresClassTime = [ARresClassTime; timeClass];
 end
+acc = mean(ARresAcc);
+trainTime = mean(ARresTrainTime);
+classTime = mean(ARresClassTime);
 
-clear featureMat filenameMat labelMat a timeTrain acc timeTrain wi wo sigma X L
-save('AR_ELM_with_penalty')
+clear featureMat ARresAcc ARresClassTime ARresTrainTime class i j N t testL timeClass filenameMat labelMat a timeTrain timeTrain wi wo sigma X L
+save('AR_ELM')
 clear all
 
 %% YALEFACES EXTENDED
