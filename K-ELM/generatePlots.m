@@ -97,7 +97,7 @@ plot(acc,time,elmline);
 try
     cd /Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Saved Data
 catch
-    disp('Kanske sparar i fel mapp nu :/')
+    
 end
 
 figure(1)
@@ -107,7 +107,7 @@ if strcmp(dataset,'MNIST')
 end
 ylabel('Accuracy');
 title(dataset);
-legend('KELM RBF','KELM Polynomial','KELM Linear','ELM','location','best')
+legend('KELM RBF','KELM Polynomial','KELM Linear','ELM','location','northwest')
 savefig(strcat(dataset,'_figure_',num2str(1)))
 saveas(figure(1),strcat(dataset,'_figure_',num2str(1),'.png'))
 
@@ -118,7 +118,7 @@ if strcmp(dataset,'MNIST')
 end
 ylabel('Training and classification time [s]');
 title(dataset);
-legend('KELM RBF','KELM Polynomial','KELM Linear','ELM','location','best')
+legend('KELM RBF','KELM Polynomial','KELM Linear','ELM','location','northwest')
 savefig(strcat(dataset,'_figure_',num2str(2)))
 saveas(figure(2),strcat(dataset,'_figure_',num2str(2),'.png'))
 
@@ -126,7 +126,7 @@ figure(3)
 ylabel('Training and classification time [s]');
 xlabel('Accuracy');
 title(dataset);
-legend('KELM RBF','KELM Polynomial','KELM Linear','ELM','location','best')
+legend('KELM RBF','KELM Polynomial','KELM Linear','ELM','location','northwest')
 savefig(strcat(dataset,'_figure_',num2str(3)))
 saveas(figure(3),strcat(dataset,'_figure_',num2str(3),'.png'))
 

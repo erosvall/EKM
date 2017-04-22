@@ -1,16 +1,13 @@
 clear all
 
-kernel = 'poly';
-kernelparam = 1;
-
 %cd '/Users/Viktor/Dropbox/KTH/År 3/Period 4/Kex/Saved Data/'
 %cd /Users/erikrosvall/github/KEX/K-ELM/
 %addpath('C:\Users\Viktor Karlsson\Dropbox\KTH\År 3\Period 4\Kex\Datasets');
 %% MNIST
-kernel = 'rbf';
-kernelparam = 3;
-datasize = [5000:5000:5000];
-lambda= 1;
+kernel = 'poly';
+kernelparam = 2;
+datasize = [2500:2500:30000];
+lambda= 1e4;
 % --------------------------
 tic
 disp('mnist')
@@ -45,7 +42,7 @@ classTime = classificationTime;
 
 clear  accuracy d classificationTime tempTrainTime imagesTrain imagesTest labelsTest labelsTrain sigma testL wi wo X L t
 save(strcat('MNIST',kernel,num2str(kernelparam)));
-%clear all
+clear all
 toc
 %% RANDOM FACES AR
 kernel = 'rbf';
