@@ -5,9 +5,9 @@ clear all
 %addpath('C:\Users\Viktor Karlsson\Dropbox\KTH\År 3\Period 4\Kex\Datasets');
 %% MNIST
 kernel = 'poly';
-kernelparam = 2;
-datasize = [2500:2500:30000];
-lambda= 1e4;
+kernelparam = 1;
+datasize = 2500:2500:30000;
+lambda= 1e2;
 % --------------------------
 tic
 disp('mnist')
@@ -45,10 +45,10 @@ save(strcat('MNIST',kernel,num2str(kernelparam)));
 clear all
 toc
 %% RANDOM FACES AR
-kernel = 'rbf';
-kernelparam = 2000;
+kernel = 'poly';
+kernelparam = 1;
 datasize = 0.3:0.05:0.8;
-lambda = 1e-6;
+lambda = 1e9;
 iterations = 100;
 %--------------------------
 
@@ -107,11 +107,11 @@ save(strcat('AR',kernel,num2str(kernelparam)))
 clear all
 toc
 %% YALEFACES EXTENDED
-kernel = 'rbf';
+kernel = 'poly';
 kernelparam = 1;
 lambda = 1e8;
-datasize = 0.3:0.1:0.8;
-iterations = 2;
+datasize = 0.3:0.05:0.8;
+iterations = 100;
 % ------------------------
 tic
 disp('yalefaces')
@@ -168,11 +168,11 @@ save(strcat('YF',kernel,num2str(kernelparam)))
 clear all
 toc
 %% CALTECH101
-kernel = 'rbf';
+kernel = 'poly';
 kernelparam = 1;
-lambda = 1e-1;
-datasize = 0.3:0.1:0.8;
-iterations = 2;
+lambda = 1e-2;
+datasize = 0.3:0.05:0.8;
+iterations = 20;
 % ----------------
 
 tic
@@ -228,11 +228,11 @@ save(strcat('CalTech101',kernel,num2str(kernelparam)))
 clear all
 toc
 %% SCENE15
-kernel = 'rbf';
+kernel = 'poly';
 kernelparam = 1;
 lambda = 1e-7;
-datasize = 0.5:0.1:0.6;
-iterations = 2;
+datasize = 0.3:0.05:0.8;
+iterations = 25;
 % ----------------
 
 tic
