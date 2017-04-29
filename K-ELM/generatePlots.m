@@ -2,13 +2,13 @@
 close all
 clear all
 
-dataset = 'MNIST';                  % for graph titles and file load
+dataset = 'scene15';                  % for graph titles and file load
 
 
 
 % --------- LOAD FILES ----------------------------------------------------
-kelmrbffile = strcat(dataset,'rbf3');               % kelm-data
-kelmpoly2file = strcat(dataset,'poly');
+kelmrbffile = strcat(dataset,'rbf');               % kelm-data
+kelmpoly2file = strcat(dataset,'poly2');
 kelmpoly1file = strcat(dataset,'poly1');
 elmfile = strcat(dataset,'_ELM_with_penalty');      % elm-data
 
@@ -75,9 +75,9 @@ plot(acc,time,poly1line);
 
 load(elmfile);
 % For MNIST, toggle comments below ----------
-%acc = mean(acc) ;                      % commented for MNIST
-%time = mean(classTime + trainTime);    % commented for MNIST
-time = classTime + trainTime;           % activated for MNIST
+acc = mean(acc) ;                      % commented for MNIST
+time = mean(classTime + trainTime);    % commented for MNIST
+%time = classTime + trainTime;           % activated for MNIST
 %-------------------------
 
 elmline = 'kx--';
